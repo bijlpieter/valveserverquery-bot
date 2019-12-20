@@ -226,7 +226,7 @@ async function sendServers(retval, channel) {
 	embed.setTitle(string);
 	embed.setColor("#42b548");
 	channel.send(embed);
-	for (let i = 0; i < retval.length; i++) {
+	for (let i = 0; i < retval.length && i < 5; i++) {
 		let str = retval[i].connect.split(':');
 		queryServer(str[0], str[1], channel);
 		await sleep(500);
