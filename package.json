@@ -1,0 +1,15 @@
+{
+  "name": "Valve Server Query",
+  "version": "1.0.0",
+  "description": "Valve Server Query",
+  "main": "valveserverquery.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chrysophylaxs",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "gamedig": "^2.0.20",
+  }
+}
