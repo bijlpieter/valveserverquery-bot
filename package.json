@@ -1,7 +1,7 @@
 {
-  "name": "Valve Server Query",
+  "name": "valveserverquery",
   "version": "1.0.0",
-  "description": "Valve Server Query",
+  "description": "valveserverquery",
   "main": "valveserverquery.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
