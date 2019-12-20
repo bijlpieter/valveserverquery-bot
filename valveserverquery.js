@@ -73,6 +73,10 @@ client.on('message', (msg) => {
 		sendServers(retval, msg.channel);
 	}
 	else {
+		let embed = new discord.RichEmbed();
+		embed.setTitle("Currently monitoring " + states.length + " Servers");
+		embed.setColor("#42b548");
+		msg.channel.send(embed);
 		msg.channel.send(help);
 	}
 	return undefined;
@@ -226,7 +230,7 @@ async function sendServers(retval, channel) {
 	embed.setTitle(string);
 	embed.setColor("#42b548");
 	channel.send(embed);
-	for (let i = 0; i < retval.length && i < 5; i++) {
+	for (let i = 0; i < retval.length && i < 4; i++) {
 		let str = retval[i].connect.split(':');
 		queryServer(str[0], str[1], channel);
 		await sleep(500);
@@ -236,14 +240,19 @@ async function sendServers(retval, channel) {
 async function updateServers(state) {
 	let date = new Date()
 	let index = servers.indexOf(state.connect);
-	if (index == -1) {
+	if (index == -1 && state.players.length > 0) {
 		servers.push(state.connect);
 		states.push(state);
 		timestamps.push(date.getTime());
 	}
-	else {
+	else if (index != -1 && state.players.length > 0) {
 		timestamps[index] = date.getTime();
 		states[index] = state;
+	}
+	else if (index != -1) {
+		servers.splice(index, 1);
+		states.splice(index, 1);
+		timestamps.splice(index, 1);
 	}
 }
 
@@ -257,7 +266,7 @@ async function query(input, ranges) {
 				host: input + ip,
 				port: port
 			}).then((state) => {
-				if (state.raw.game == 'Team Fortress' && state.players.length > 0) {
+				if (state.raw.game == 'Team Fortress') {
 					updateServers(state);
 					// console.log(state.map + " | " + state.connect);
 				}
