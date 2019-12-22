@@ -92,7 +92,7 @@ function isCP(map) {return map.startsWith('cp_') && !isAD(map) && !isMISC(map);}
 function isKOTH(map) {return map.startsWith('koth_');}
 function isPL(map) {return map.startsWith('pl_');}
 function isPLR(map) {return map.startsWith('plr_');}
-function isMISC(map) {return map == 'tc_hydro' || map == 'cp_degrootkeep' || map == 'cp_snowplow';}
+function isMISC(map) {return map == 'tc_hydro' || map == 'cp_degrootkeep' || map == 'cp_snowplow' || map == 'sd_doomsday';}
 function isPD(map) {return map.startsWith('pd_');}
 function isMP(map) {return map == 'ctf_thundermountain' || map == 'ctf_hellfire' || map == 'ctf_foundry' || map == 'ctf_gorge';}
 function isPASS(map) {return map.startsWith('pass_');}
