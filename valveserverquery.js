@@ -50,11 +50,32 @@ This will search for servers with players whose names contain "The End" or "The_
 \`\`\`
 `);
 
+function buildServerEmbed(state) {
+	let string = "```c\nMap: " + state.map + "\nIP: " + state.connect + "\nName                           | Kills\n======================================";
+	for (let i = 0; i < state.players.length; i++) if (!state.players[i].hasOwnProperty('name')) {
+		state.players[i].name = "Connecting...";
+		state.players[i].score = -1;
+	}
+	state.players.sort((a, b) => b.score - a.score);
+	for (let i = 0; i < state.players.length; i++) {
+		string = string + "\n" + state.players[i].name;
+		if (state.players[i].name) for (let j = 0; j < 30 - state.players[i].name.length; j++) string += " ";
+		string = string + " | " + state.players[i].score;
+	}
+	string = string + "\n======================================\nTotal: " + state.players.length + " / " + state.maxplayers + "```";
+	let embed = new discord.RichEmbed();
+	embed.setTitle(state.name);
+	embed.setDescription(string);
+	embed.setColor("#f75931");
+	return embed;
+}
+
 const client = new discord.Client({disableEveryone: true});
 client.login(process.env.DISCORD);
 
 client.on("ready", function() {
 	client.user.setActivity('!query | finding servers...', {type: 'PLAYING'});
+	client.channels.get('659147471825666066').bulkDelete(5);
 	console.log("Valve Server Query Bot");
 });
 
@@ -135,7 +156,6 @@ function getGamemode(map) {
 
 let servers = [];
 let states = [];
-let timestamps = [];
 
 function getServers(args) {
 	let continents = [];
@@ -243,18 +263,54 @@ async function updateServers(state) {
 	if (index == -1 && state.players.length > 0) {
 		servers.push(state.connect);
 		states.push(state);
-		timestamps.push(date.getTime());
 	}
 	else if (index != -1 && state.players.length > 0) {
-		timestamps[index] = date.getTime();
 		states[index] = state;
 	}
 	else if (index != -1) {
 		servers.splice(index, 1);
 		states.splice(index, 1);
-		timestamps.splice(index, 1);
 	}
 }
+
+let mannpowerServers = [];
+let mannpowerMessages = [];
+
+async function updateMannpower() {
+	for (let i = 0; i < mannpowerServers.length; i++) {
+		let str = mannpowerServers[i].split(':');
+		Gamedig.query({
+			type: 'tf2',
+			host: str[0],
+			port: str[1],
+			socketTimeout: 3000,
+			maxAttempts: 3
+		}).then((state) => {
+			if (!isMP(state.map) || state.players.length == 0) {
+				mannpowerServers.splice(index, 1);
+				mannpowerMessages[i].delete()
+				mannpowerMessages.splice(index, 1);
+			}
+			else {
+				mannpowerServers[i] = state.connect;
+				mannpowerMessages[i].edit(buildServerEmbed(state));
+			}
+		}).catch(() => {
+			mannpowerServers.splice(i, 1);
+			mannpowerMessages[i].delete()
+			mannpowerMessages.splice(i, 1);
+		});
+		await sleep(2000);
+	}
+	await sleep(2000);
+}
+
+async function callUpdateMannpower() {
+	await updateMannpower();
+	callUpdateMannpower();
+}
+
+callUpdateMannpower();
 
 async function query(input, ranges) {
 	for (let [from, to] of ranges)
@@ -268,6 +324,12 @@ async function query(input, ranges) {
 			}).then((state) => {
 				if (state.raw.game == 'Team Fortress') {
 					updateServers(state);
+					if (isMP(state.map) && mannpowerServers.indexOf(state.connect) == -1) {
+						mannpowerServers.push(state.connect);
+						client.channels.get('659147471825666066').send(buildServerEmbed(state)).then((msg) => {
+							mannpowerMessages.push(msg);
+						});
+					}
 					// console.log(state.map + " | " + state.connect);
 				}
 				// if (state.raw.game == 'Team Fortress') console.log(state.connect + " " + state.name);
@@ -349,40 +411,17 @@ async function queryServer(ip, port, channel) {
 		socketTimeout: 3000,
 		maxAttempts: 3
 	}).then((state) => {
-		let date = new Date()
-		sendServerInfo(state, channel, date.getTime());
+		channel.send(buildServerEmbed(state));
 		let index = servers.indexOf(state.connect);
 		if (index != -1) {
-			timestamps[index] = date.getTime();
 			states[index] = state;
 		}
 	}).catch((error) => {
-		let index = servers.indexOf(state.connect);
+		let index = servers.indexOf(ip + ':' + port);
 		if (index != -1) {
 			servers.splice(index, 1);
 			states.splice(index, 1);
-			timestamps.splice(index, 1);
 		}
 	});
 	return undefined;
-}
-
-async function sendServerInfo(state, channel, time) {
-	let string = "```c\nMap: " + state.map + "\nIP: " + state.connect + "\nName                           | Kills\n======================================";
-	state.players.sort((a, b) => b.score - a.score);
-	for (let i = 0; i < state.players.length; i++) {
-		if (!state.players[i].hasOwnProperty("name")) continue;
-		string = string + "\n" + state.players[i].name;
-		if (state.players[i].name) for (let j = 0; j < 30 - state.players[i].name.length; j++) string += " ";
-		string = string + " | " + state.players[i].score;
-	}
-	string = string + "\n======================================\nTotal: " + state.players.length + " / " + state.maxplayers + "```";
-	let embed = new discord.RichEmbed();
-	embed.setTitle(state.name);
-	embed.setDescription(string);
-	embed.setColor("#f75931");
-	let date = new Date();
-	embed.setFooter("Time since last query: " + (date.getTime() - time) / 1000 + " seconds");
-	embed.setTimestamp(date);
-	channel.send(embed);
 }
