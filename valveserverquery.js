@@ -80,7 +80,7 @@ client.on("ready", function() {
 });
 
 client.on('message', (msg) => {
-	if (msg.author.bot) return undefined;
+	if (msg.author == client.user) return undefined;
 	if (!msg.content.startsWith('!query')) return undefined;
 	let content = msg.content.toLowerCase();
 	let args = content.split(' ');
