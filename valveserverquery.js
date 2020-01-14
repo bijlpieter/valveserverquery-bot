@@ -76,11 +76,13 @@ client.login(process.env.DISCORD);
 client.on("ready", function() {
 	client.user.setActivity('!query | finding servers...', {type: 'PLAYING'});
 	client.channels.get('659147471825666066').bulkDelete(5);
+	client.channels.get('666536160079773709').bulkDelete(5);
 	console.log("Valve Server Query Bot");
 });
 
 client.on('message', (msg) => {
-	if (msg.author == client.user) return undefined;
+	if (msg.author.bot) return undefined;
+	if (msg.guild.id == '665315026474762270') return undefined;
 	if (!msg.content.startsWith('!query')) return undefined;
 	let content = msg.content.toLowerCase();
 	let args = content.split(' ');
@@ -274,7 +276,8 @@ async function updateServers(state) {
 }
 
 let mannpowerServers = [];
-let mannpowerMessages = [];
+let mannpowerMessagesServer1 = [];
+let mannpowerMessagesServer2 = [];
 
 async function updateMannpower() {
 	for (let i = 0; i < mannpowerServers.length; i++) {
@@ -288,17 +291,22 @@ async function updateMannpower() {
 		}).then((state) => {
 			if (!isMP(state.map) || state.players.length == 0) {
 				mannpowerServers.splice(index, 1);
-				mannpowerMessages[i].delete()
-				mannpowerMessages.splice(index, 1);
+				mannpowerMessagesServer1[i].delete();
+				mannpowerMessagesServer2[i].delete();
+				mannpowerMessagesServer1.splice(i, 1);
+				mannpowerMessagesServer2.splice(i, 1);
 			}
 			else {
 				mannpowerServers[i] = state.connect;
-				mannpowerMessages[i].edit(buildServerEmbed(state));
+				mannpowerMessagesServer1[i].edit(buildServerEmbed(state));
+				mannpowerMessagesServer2[i].edit(buildServerEmbed(state));
 			}
 		}).catch(() => {
 			mannpowerServers.splice(i, 1);
-			mannpowerMessages[i].delete()
-			mannpowerMessages.splice(i, 1);
+			mannpowerMessagesServer1[i].delete();
+			mannpowerMessagesServer2[i].delete();
+			mannpowerMessagesServer1.splice(i, 1);
+			mannpowerMessagesServer2.splice(i, 1);
 		});
 		await sleep(2000);
 	}
@@ -327,7 +335,10 @@ async function query(input, ranges) {
 					if (isMP(state.map) && mannpowerServers.indexOf(state.connect) == -1) {
 						mannpowerServers.push(state.connect);
 						client.channels.get('659147471825666066').send(buildServerEmbed(state)).then((msg) => {
-							mannpowerMessages.push(msg);
+							mannpowerMessagesServer1.push(msg);
+						});
+						client.channels.get('666536160079773709').send(buildServerEmbed(state)).then((msg) => {
+							mannpowerMessagesServer2.push(msg);
 						});
 					}
 					// console.log(state.map + " | " + state.connect);
