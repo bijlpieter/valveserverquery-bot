@@ -59,8 +59,10 @@ function buildServerEmbed(state) {
 	state.players.sort((a, b) => b.score - a.score);
 	for (let i = 0; i < state.players.length; i++) {
 		string = string + "\n" + state.players[i].name;
-		if (state.players[i].name) for (let j = 0; j < 30 - state.players[i].name.length; j++) string += " ";
-		string = string + " | " + state.players[i].score;
+		if (state.players[i].score >= 0) {
+			if (state.players[i].name) for (let j = 0; j < 30 - state.players[i].name.length; j++) string += " ";
+			string = string + " | " + state.players[i].score;
+		}
 	}
 	string = string + "\n======================================\nTotal: " + state.players.length + " / " + state.maxplayers + "```";
 	let embed = new discord.RichEmbed();
@@ -275,14 +277,12 @@ async function updateServers(state) {
 	}
 }
 
-let mannpowerServers = [];
-let mannpowerMessagesServer1 = [];
-let mannpowerMessagesServer2 = [];
+let mannpower = {};
 
 async function updateMannpower() {
-	for (let i = 0; i < mannpowerServers.length; i++) {
-		let str = mannpowerServers[i].split(':');
-		Gamedig.query({
+	for (let connect in mannpower) {
+		let str = connect.split(':');
+		await Gamedig.query({
 			type: 'tf2',
 			host: str[0],
 			port: str[1],
@@ -290,23 +290,20 @@ async function updateMannpower() {
 			maxAttempts: 3
 		}).then((state) => {
 			if (!isMP(state.map) || state.players.length == 0) {
-				mannpowerServers.splice(index, 1);
-				mannpowerMessagesServer1[i].delete();
-				mannpowerMessagesServer2[i].delete();
-				mannpowerMessagesServer1.splice(i, 1);
-				mannpowerMessagesServer2.splice(i, 1);
+				if (mannpower[connect]['eum']) mannpower[connect]['eum'].delete();
+				if (mannpower[connect]['rha']) mannpower[connect]['rha'].delete();
+				delete mannpower[connect];
 			}
 			else {
-				mannpowerServers[i] = state.connect;
-				mannpowerMessagesServer1[i].edit(buildServerEmbed(state));
-				mannpowerMessagesServer2[i].edit(buildServerEmbed(state));
+				if (!mannpower[connect]['eum']) client.channels.get('659147471825666066').send(buildServerEmbed(state)).then((msg) => {mannpower[connect]['eum'] = msg});
+				else mannpower[connect]['eum'].edit(buildServerEmbed(state))
+				if (!mannpower[connect]['rha']) client.channels.get('666536160079773709').send(buildServerEmbed(state)).then((msg) => {mannpower[connect]['rha'] = msg});
+				else mannpower[connect]['rha'].edit(buildServerEmbed(state))
 			}
 		}).catch(() => {
-			mannpowerServers.splice(i, 1);
-			mannpowerMessagesServer1[i].delete();
-			mannpowerMessagesServer2[i].delete();
-			mannpowerMessagesServer1.splice(i, 1);
-			mannpowerMessagesServer2.splice(i, 1);
+			if (mannpower[connect]['eum']) mannpower[connect]['eum'].delete();
+			if (mannpower[connect]['rha']) mannpower[connect]['rha'].delete();
+			delete mannpower[connect];
 		});
 		await sleep(2000);
 	}
@@ -332,14 +329,8 @@ async function query(input, ranges) {
 			}).then((state) => {
 				if (state.raw.game == 'Team Fortress') {
 					updateServers(state);
-					if (isMP(state.map) && mannpowerServers.indexOf(state.connect) == -1) {
-						mannpowerServers.push(state.connect);
-						client.channels.get('659147471825666066').send(buildServerEmbed(state)).then((msg) => {
-							mannpowerMessagesServer1.push(msg);
-						});
-						client.channels.get('666536160079773709').send(buildServerEmbed(state)).then((msg) => {
-							mannpowerMessagesServer2.push(msg);
-						});
+					if (isMP(state.map)) {
+						if (!mannpower.hasOwnProperty(state.connect)) mannpower[state.connect] = {'eum': undefined, 'rha': undefined};
 					}
 					// console.log(state.map + " | " + state.connect);
 				}
