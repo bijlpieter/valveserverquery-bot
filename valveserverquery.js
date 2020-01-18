@@ -29,8 +29,8 @@ help.addField("There are 5 possible options, each option can have any number of 
 `);
 help.addField("\`-c\`, \`-l\` and \`-gm\` have limited options as parameters:", `
 \`\`\`c
-	-c [na, eu] for North America and Europe
-	-l [lux, sto, mad, vir, lax] for Luxembourg, Stockholm, Madrid, Virginia and LA
+	-c [na, eu, as] for North America, Europe and Asia
+	-l [lux, sto, mad, vir, lax, sgp, tky, hkg] for Luxembourg, Stockholm, Madrid, Virginia, Los Angeles, Singapore, Tokyo and Hong Kong
 	-gm [ad, ctf, koth, cp, pl, plr, misc, mp, pass, pd, mvm] for every Gamemode
 \`\`\`
 `);
