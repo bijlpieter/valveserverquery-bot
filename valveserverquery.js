@@ -128,12 +128,18 @@ function isLAX(ip) {return ip.startsWith("162.254.194.");}
 function isLUX(ip) {return ip.startsWith("146.66.152.") || ip.startsWith("146.66.153.") || ip.startsWith("146.66.158.") || ip.startsWith("146.66.159.") || ip.startsWith("155.133.240.") || ip.startsWith("155.133.241.");}
 function isSTO(ip) {return ip.startsWith("146.66.156.") || ip.startsWith("146.66.157.") || ip.startsWith("155.133.242.") || ip.startsWith("155.133.243.") || ip.startsWith("185.25.180.") || ip.startsWith("185.25.181.");}
 function isMAD(ip) {return ip.startsWith("155.133.247.");}
+function isSGP(ip) {return ip.startsWith("103.28.54.") || ip.startsWith("103.28.55.") || ip.startsWith("45.121.184.") || ip.startsWith("45.121.185.");}
+function isTKY(ip) {return ip.startsWith("45.121.186.") || ip.startsWith("45.121.187.");}
+function isHKG(ip) {return ip.startsWith("155.133.244.");}
 function isNA(ip) {return isVIR(ip) || isLAX(ip);}
 function isEU(ip) {return isLUX(ip) || isSTO(ip) || isMAD(ip);}
+function isAS(ip) {return isSGP(ip) || isTKY(ip) || isHKG(ip);}
 
 function getContinent(ip) {
-	if (isVIR(ip) || isLAX(ip)) return 'na';
-	if (isLUX(ip) || isSTO(ip) || isMAD(ip)) return 'eu';
+	if (isNA(ip)) return 'na';
+	if (isEU(ip)) return 'eu';
+	if (isAS(ip)) return 'as';
+	return '??';
 }
 
 function getLocation(ip) {
@@ -142,6 +148,10 @@ function getLocation(ip) {
 	if (isLUX(ip)) return 'lux';
 	if (isSTO(ip)) return 'sto';
 	if (isMAD(ip)) return 'mad';
+	if (isSGP(ip)) return 'sgp';
+	if (isTKY(ip)) return 'tky';
+	if (isHKG(ip)) return 'hkg';
+	return '???';
 }
 
 function getGamemode(map) {
@@ -156,6 +166,7 @@ function getGamemode(map) {
 	if (isMP(map)) return 'mp';
 	if (isPASS(map)) return 'pass';
 	if (isMVM(map)) return 'mvm';
+	return '???';
 }
 
 let servers = [];
@@ -321,7 +332,7 @@ async function query(input, ranges) {
 	for (let [from, to] of ranges)
 	for (let ip = from; ip <= to; ip++) {
 		// console.log(ip);
-		for (let port = 27015; port < 27090; port++) {
+		for (let port = 27015; port < 27075; port++) {
 			Gamedig.query({
 				type: 'tf2',
 				host: input + ip,
@@ -338,7 +349,7 @@ async function query(input, ranges) {
 			}).catch((error) => {
 				// console.log("Server is Offline");
 			});
-			await sleep(20);
+			await sleep(10);
 		}
 	}
 }
@@ -393,12 +404,37 @@ async function madrid() {
 	// await query('155.133.248.', [[0, 255]]);
 }
 
+async function singapore() {
+	await query('103.28.54.', [[163, 164]]);
+	await query('103.28.55.', [[71, 73], [232, 233]]);
+	// await query('103.10.124.', [[0, 255]]);
+	await query('45.121.184.', [[163, 164]]);
+	await query('45.121.185.', [[67, 68], [228, 229]]);
+}
+
+async function tokyo() {
+	await query('45.121.186.', [[160, 162]]);
+	await query('45.121.187.', [[60, 62]]);
+}
+
+async function sydney() {
+	// await query('103.10.125.', [[0, 255]]);
+}
+
+async function hongkong() {
+	await query('155.133.244.', [[76, 78], [236, 238]]);
+}
+
 async function queryAll() {
 	await luxembourg();
 	await stockholm();
 	await madrid();
 	await virginia();
 	await losangeles();
+	await singapore();
+	await tokyo();
+	await sydney();
+	await hongkong();
 	// console.log("=== CHECKED ALL SERVERS ===");
 	queryAll();
 }
