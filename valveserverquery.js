@@ -30,14 +30,17 @@ help.addField("There are 5 possible options, each option can have any number of 
 help.addField("\`-c\`, \`-l\` and \`-gm\` have limited options as parameters:", `
 \`\`\`c
 	-c [na, eu, as] for North America, Europe and Asia
-	-l [lux, sto, mad, vir, lax, sgp, tky, hkg] for Luxembourg, Stockholm, Madrid, Virginia, Los Angeles, Singapore, Tokyo and Hong Kong
-	-gm [ad, ctf, koth, cp, pl, plr, misc, mp, pass, pd, mvm] for every Gamemode
+	-l [lux, sto, mad, vir, lax, sgp, tky, hkg] for 
+	    Luxembourg, Stockholm, Madrid, Virginia, Los Angeles,
+	    Singapore, Tokyo and Hong Kong
+	-gm [ad, ctf, koth, cp, pl, plr, misc, mp, pass, pd, mvm]
+	    for each Gamemode
 \`\`\`
 `);
 help.addField("\`-m\` and \`-p\` can be used with any parameters:", `
 \`\`\`c
 The bot will search all servers regardless of the parameters:
-	-m bla_bla
+	-m pl_upward
 	-p Chrysophylaxs
 \`\`\`
 `);
@@ -68,17 +71,24 @@ function buildServerEmbed(state) {
 	let embed = new discord.RichEmbed();
 	embed.setTitle(state.name);
 	embed.setDescription(string);
-	embed.setColor("#f75931");
+	if (isLUX(state.connect)) embed.setColor("#ea3115");
+	if (isSTO(state.connect)) embed.setColor("#ea5815");
+	if (isMAD(state.connect)) embed.setColor("#eae715");
+	if (isVIR(state.connect)) embed.setColor("#63ea15");
+	if (isLAX(state.connect)) embed.setColor("#15ea71");
+	if (isHKG(state.connect)) embed.setColor("#15c3ea");
+	if (isSGP(state.connect)) embed.setColor("#155fea");
+	if (isTKY(state.connect)) embed.setColor("#8e15ea");
 	return embed;
 }
 
 const client = new discord.Client({disableEveryone: true});
-client.login(process.env.DISCORD);
+client.login('NjU3MDE5ODAwNjg5ODM2MDMy.Xf0kKQ.PjQKU9R2m1AUEbXadeogq2_08V4');
 
 client.on("ready", function() {
 	client.user.setActivity('!query | finding servers...', {type: 'PLAYING'});
-	client.channels.get('659147471825666066').bulkDelete(5);
-	client.channels.get('666536160079773709').bulkDelete(5);
+	client.channels.get('659147471825666066').bulkDelete(10);
+	client.channels.get('666536160079773709').bulkDelete(10);
 	console.log("Valve Server Query Bot");
 });
 
@@ -273,7 +283,6 @@ async function sendServers(retval, channel) {
 }
 
 async function updateServers(state) {
-	let date = new Date()
 	let index = servers.indexOf(state.connect);
 	if (index == -1 && state.players.length > 0) {
 		servers.push(state.connect);
