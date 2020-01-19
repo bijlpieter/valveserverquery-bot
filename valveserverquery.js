@@ -83,7 +83,7 @@ function buildServerEmbed(state) {
 }
 
 const client = new discord.Client({disableEveryone: true});
-client.login('NjU3MDE5ODAwNjg5ODM2MDMy.Xf0kKQ.PjQKU9R2m1AUEbXadeogq2_08V4');
+client.login(process.env.DISCORD);
 
 client.on("ready", function() {
 	client.user.setActivity('!query | finding servers...', {type: 'PLAYING'});
