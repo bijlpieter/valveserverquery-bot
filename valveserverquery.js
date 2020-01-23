@@ -94,7 +94,7 @@ client.on("ready", function() {
 
 client.on('message', (msg) => {
 	if (msg.author.bot) return undefined;
-	if (msg.guild.id == '665315026474762270') return undefined;
+	if (msg.guild.id == '665315026474762270' && msg.author.id != '267910288622223364') return undefined;
 	if (!msg.content.startsWith('!query')) return undefined;
 	let content = msg.content.toLowerCase();
 	let args = content.split(' ');
