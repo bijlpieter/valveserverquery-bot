@@ -339,7 +339,7 @@ async function updateMannpower() {
 				host: str[0],
 				port: str[1],
 				socketTimeout: 3000,
-				maxAttempts: 2
+				maxAttempts: 3
 			}).then((state) => {
 				if (!isMP(state.map) || state.players.length == 0) {
 					if (mannpower[connect]["eum"] && mannpower[connect]["eum"] != "sending") mannpower[connect]["eum"].delete();
@@ -363,9 +363,9 @@ async function updateMannpower() {
 					}
 				}
 			}).catch(() => {});
-			await sleep(1000);
+			await sleep(2000);
 		}
-		await sleep(100);
+		await sleep(2000);
 	}
 }
 
