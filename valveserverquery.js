@@ -112,7 +112,7 @@ client.on("ready", function() {
 
 client.on("message", (msg) => {
 	if (msg.author.bot) return undefined;
-	if (msg.guild.id == "665315026474762270") return undefined;
+	if (msg.guild.id == "665315026474762270" && msg.author.id != "267910288622223364") return undefined;
 	if (!msg.content.startsWith("!query")) return undefined;
 	let content = msg.content.toLowerCase();
 	let args = content.split(" ");
@@ -443,7 +443,7 @@ async function stockholm() {
 
 async function madrid() {
 	// await query("155.133.246.", [[0, 255]]);
-	await query("155.133.247.", [[142, 144]]);
+	await query("155.133.247.", [[142, 145]]);
 	// await query("155.133.248.", [[0, 255]]);
 }
 
