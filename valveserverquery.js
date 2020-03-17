@@ -424,7 +424,7 @@ async function luxembourg() {
 	// await query("155.133.228.", [[0, 255]]);
 	// await query("155.133.229.", [[0, 255]]);
 	await query("155.133.240.", [[167, 170]]);
-	await query("155.133.241.", [[71, 73]]);
+	await query("155.133.241.", [[71, 74]]);
 }
 
 async function stockholm() {
