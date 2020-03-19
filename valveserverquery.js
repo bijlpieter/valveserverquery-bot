@@ -302,11 +302,15 @@ function getServers(args) {
 
 async function sendServers(retval, flagAll, channel) {
 	let embed = new discord.RichEmbed();
-	let string = "Found " + retval.length + " out of " + states.length + " logged Servers";
+	let total = 0;
+	for (let i = 0; i < states.length; i++) {
+		total += states[i].players.length;
+	}
+	let string = "Found " + retval.length + " out of " + states.length + " logged Servers | Total players: " + total;
 	embed.setTitle(string);
 	embed.setColor("#42b548");
 	channel.send(embed);
-	for (let i = 0; i < retval.length && (i < 4 || flagAll); i++) {
+	for (let i = 0; (i < retval.length) && (i < 4 || flagAll); i++) {
 		let str = retval[i].connect.split(":");
 		queryServer(str[0], str[1], channel);
 		await sleep(500);
