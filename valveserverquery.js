@@ -503,7 +503,8 @@ async function queryAll() {
 		await washington();
 		await singapore();
 		await tokyo();
-		await sydney();
+		// await sydney();
+		await chile();
 	}
 }
 
