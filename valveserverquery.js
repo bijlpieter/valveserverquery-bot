@@ -28,9 +28,9 @@ help.addField("There are 6 possible options:", `
 help.addField("\`-c\`, \`-l\` and \`-gm\` have limited options as parameters:", `
 \`\`\`c
 	-c [na, eu, as] for North America, Europe and Asia
-	-l [lux, sto, mad, vir, lax, sgp, tky, hkg] for 
+	-l [lux, sto, mad, vir, lax, mwh, sgp, tky, hkg, chi] for 
 	    Luxembourg, Stockholm, Madrid, Virginia, Los Angeles,
-	    Singapore, Tokyo and Hong Kong
+	    Washington, Singapore, Tokyo, Hong Kong and Chile
 	-gm [ad, ctf, koth, cp, pl, plr, misc, mp, pass, pd, mvm]
 	    for each Gamemode
 \`\`\`
@@ -94,9 +94,11 @@ function buildServerEmbed(state) {
 	if (isMAD(state.connect)) embed.setColor("#eae715");
 	if (isVIR(state.connect)) embed.setColor("#63ea15");
 	if (isLAX(state.connect)) embed.setColor("#15ea71");
+	if (isMWH(state.connect)) embed.setColor("#002800");
 	if (isHKG(state.connect)) embed.setColor("#15c3ea");
 	if (isSGP(state.connect)) embed.setColor("#155fea");
 	if (isTKY(state.connect)) embed.setColor("#8e15ea");
+	if (isCHI(state.connect)) embed.setColor("#654321");
 	return embed;
 }
 
@@ -154,13 +156,16 @@ function isMVM(map) {return map.startsWith("mvm_");}
 
 function isVIR(ip) {return ip.startsWith("208.78.164.") || ip.startsWith("208.78.165.");}
 function isLAX(ip) {return ip.startsWith("162.254.194.");}
+function isMWH(ip) {return ip.startsWith("192.69.97.");}
 function isLUX(ip) {return ip.startsWith("146.66.152.") || ip.startsWith("146.66.153.") || ip.startsWith("146.66.158.") || ip.startsWith("146.66.159.") || ip.startsWith("155.133.240.") || ip.startsWith("155.133.241.");}
 function isSTO(ip) {return ip.startsWith("146.66.156.") || ip.startsWith("146.66.157.") || ip.startsWith("155.133.242.") || ip.startsWith("155.133.243.") || ip.startsWith("185.25.180.") || ip.startsWith("185.25.181.");}
 function isMAD(ip) {return ip.startsWith("155.133.247.");}
 function isSGP(ip) {return ip.startsWith("103.28.54.") || ip.startsWith("103.28.55.") || ip.startsWith("45.121.184.") || ip.startsWith("45.121.185.");}
 function isTKY(ip) {return ip.startsWith("45.121.186.") || ip.startsWith("45.121.187.");}
 function isHKG(ip) {return ip.startsWith("155.133.244.");}
-function isNA(ip) {return isVIR(ip) || isLAX(ip);}
+function isCHI(ip) {return ip.startsWith("155.133.249.");}
+
+function isNA(ip) {return isVIR(ip) || isLAX(ip) || isMWH(ip);}
 function isEU(ip) {return isLUX(ip) || isSTO(ip) || isMAD(ip);}
 function isAS(ip) {return isSGP(ip) || isTKY(ip) || isHKG(ip);}
 
@@ -174,12 +179,14 @@ function getContinent(ip) {
 function getLocation(ip) {
 	if (isVIR(ip)) return "vir";
 	if (isLAX(ip)) return "lax";
+	if (isMWH(ip)) return "mwh";
 	if (isLUX(ip)) return "lux";
 	if (isSTO(ip)) return "sto";
 	if (isMAD(ip)) return "mad";
 	if (isSGP(ip)) return "sgp";
 	if (isTKY(ip)) return "tky";
 	if (isHKG(ip)) return "hkg";
+	if (isCHI(ip)) return "chi";
 	return "???";
 }
 
@@ -306,7 +313,7 @@ async function sendServers(retval, flagAll, channel) {
 	for (let i = 0; i < states.length; i++) {
 		total += states[i].players.length;
 	}
-	let string = "Found " + retval.length + " out of " + states.length + " logged Servers | Total players: " + total;
+	let string = "Found " + retval.length + " out of " + states.length + " logged Servers  |  Total players: " + total;
 	embed.setTitle(string);
 	embed.setColor("#42b548");
 	channel.send(embed);
@@ -472,6 +479,20 @@ async function hongkong() {
 	await query("155.133.244.", [[76, 78], [236, 238]]);
 }
 
+async function chile() {
+	// Other SA
+	// await query('209.197.29.', [[0, 255]]);
+	// await query('209.197.25.', [[0, 255]]);
+	// await query('205.185.194.', [[0, 255]]);
+	// await query('143.137.146.', [[0, 255]]);
+	await query('155.133.249.', [[91, 92]]);
+}
+
+async function washington() {
+	// await query('192.69.96.', [[0, 255]]);
+	await query('192.69.97.', [[60, 62]]);
+}
+
 async function queryAll() {
 	while (true) {
 		await luxembourg();
@@ -479,6 +500,7 @@ async function queryAll() {
 		await madrid();
 		await virginia();
 		await losangeles();
+		await washington();
 		await singapore();
 		await tokyo();
 		await sydney();
