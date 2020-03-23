@@ -108,13 +108,11 @@ client.login(process.env.DISCORD);
 client.on("ready", function() {
 	client.user.setActivity("!query | finding servers...", {type: "PLAYING"});
 	client.channels.get("659147471825666066").bulkDelete(10);
-	client.channels.get("666536160079773709").bulkDelete(10);
 	console.log("Valve Server Query Bot");
 });
 
 client.on("message", (msg) => {
 	if (msg.author.bot) return undefined;
-	if (msg.guild.id == "665315026474762270" && msg.author.id != "267910288622223364") return undefined;
 	if (!msg.content.startsWith("!query")) return undefined;
 	let content = msg.content.toLowerCase();
 	let args = content.split(" ");
@@ -353,24 +351,16 @@ async function updateMannpower() {
 				maxAttempts: 3
 			}).then((state) => {
 				if (!isMP(state.map) || state.players.length == 0) {
-					if (mannpower[connect]["eum"] && mannpower[connect]["eum"] != "sending") mannpower[connect]["eum"].delete();
-					if (mannpower[connect]["rha"] && mannpower[connect]["eum"] != "sending") mannpower[connect]["rha"].delete();
+					if (mannpower[connect] && mannpower[connect] != "sending") mannpower[connect].delete();
 					delete mannpower[connect];
 				}
 				else {
-					if (mannpower[connect]["eum"] == undefined) {
-						mannpower[connect]["eum"] = "sending";
-						client.channels.get("659147471825666066").send(buildServerEmbed(state)).then((msg) => {mannpower[connect]["eum"] = msg}).catch((err) => {mannpower[connect]["eum"] = undefined});
+					if (mannpower[connect] == undefined) {
+						mannpower[connect] = "sending";
+						client.channels.get("659147471825666066").send(buildServerEmbed(state)).then((msg) => {mannpower[connect] = msg}).catch((err) => {mannpower[connect] = undefined});
 					}
-					else if (mannpower[connect]["eum"] != "sending") {
-						mannpower[connect]["eum"].edit(buildServerEmbed(state));
-					}
-					if (mannpower[connect]["rha"] == undefined) {
-						mannpower[connect]["rha"] = "sending";
-						client.channels.get("666536160079773709").send(buildServerEmbed(state)).then((msg) => {mannpower[connect]["rha"] = msg}).catch((err) => {mannpower[connect]["rha"] = undefined});
-					}
-					else if (mannpower[connect]["rha"] != "sending") {
-						mannpower[connect]["rha"].edit(buildServerEmbed(state));
+					else if (mannpower[connect] != "sending") {
+						mannpower[connect].edit(buildServerEmbed(state));
 					}
 				}
 			}).catch(() => {});
@@ -395,7 +385,7 @@ async function query(input, ranges) {
 				if (state.raw.game == "Team Fortress") {
 					updateServers(state);
 					if (isMP(state.map)) {
-						if (!mannpower.hasOwnProperty(state.connect)) mannpower[state.connect] = {"eum": undefined, "rha": undefined};
+						if (!mannpower.hasOwnProperty(state.connect)) mannpower[state.connect] = undefined;
 					}
 					// console.log(state.map + " | " + state.connect);
 				}
