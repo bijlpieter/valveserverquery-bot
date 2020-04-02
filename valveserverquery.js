@@ -352,8 +352,10 @@ async function updateMannpower() {
 				maxAttempts: 3
 			}).then((state) => {
 				if (!isMP(state.map) || state.players.length == 0) {
-					if (mannpower[connect] && mannpower[connect] != "sending") mannpower[connect].delete();
-					delete mannpower[connect];
+					if (mannpower[connect] != undefined && mannpower[connect] != "sending") {
+						mannpower[connect].delete();
+						delete mannpower[connect];
+					}
 				}
 				else {
 					if (mannpower[connect] == undefined) {
@@ -364,7 +366,12 @@ async function updateMannpower() {
 						mannpower[connect].edit(buildServerEmbed(state));
 					}
 				}
-			}).catch(() => {});
+			}).catch(() => {
+				if (mannpower[connect] != undefined && mannpower[connect] != "sending") {
+					mannpower[connect].delete();
+					delete mannpower[connect];
+				}
+			});
 			await sleep(2000);
 		}
 		await sleep(2000);
