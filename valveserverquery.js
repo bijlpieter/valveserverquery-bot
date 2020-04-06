@@ -376,8 +376,9 @@ async function updateMannpower() {
 updateMannpower();
 
 let community = {
-	"173.236.109.123:27015": undefined,
-	"45.11.16.178:27015": undefined
+	"45.11.16.178:27015": undefined,
+	"173.236.109.123:27015": undefined
+	
 }
 
 async function updateCommunity() {
