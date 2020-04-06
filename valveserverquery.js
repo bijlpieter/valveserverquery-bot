@@ -73,19 +73,20 @@ function buildErrorEmbed(error) {
 
 function buildServerEmbed(state) {
 	let string = "```c\nMap: " + state.map + "\nIP: " + state.connect + "\nName                           | Kills\n======================================";
-	for (let i = 0; i < state.players.length; i++) if (!state.players[i].hasOwnProperty("name")) {
-		state.players[i].name = "Connecting...";
-		state.players[i].score = -1;
+	let users = state.players.concat(state.bots);
+	for (let i = 0; i < users.length; i++) if (!users[i].hasOwnProperty("name")) {
+		users[i].name = "Connecting...";
+		users[i].score = -1;
 	}
-	state.players.sort((a, b) => b.score - a.score);
-	for (let i = 0; i < state.players.length; i++) {
-		string = string + "\n" + state.players[i].name;
-		if (state.players[i].score >= 0) {
-			for (let j = 0; j < 30 - state.players[i].name.length; j++) string += " ";
-			string = string + " | " + state.players[i].score;
+	users.sort((a, b) => b.score - a.score);
+	for (let i = 0; i < users.length; i++) {
+		string = string + "\n" + users[i].name;
+		if (users[i].score >= 0) {
+			for (let j = 0; j < 30 - users[i].name.length; j++) string += " ";
+			string = string + " | " + users[i].score;
 		}
 	}
-	string = string + "\n======================================\nTotal: " + state.players.length + " / " + state.maxplayers + "```";
+	string = string + "\n======================================\nTotal: " + users.length + " / " + state.maxplayers + "```";
 	let embed = new discord.RichEmbed();
 	embed.setTitle(state.name);
 	embed.setDescription(string);
@@ -108,6 +109,7 @@ client.login(process.env.DISCORD);
 client.on("ready", function() {
 	client.user.setActivity("!query | finding servers...", {type: "PLAYING"});
 	client.channels.get("659147471825666066").bulkDelete(10);
+	client.channels.get("696521177618710649").bulkDelete(10);
 	console.log("Valve Server Query Bot");
 });
 
@@ -372,6 +374,38 @@ async function updateMannpower() {
 }
 
 updateMannpower();
+
+let community = {
+	"173.236.109.123:27015": undefined,
+	"45.11.16.178:27015": undefined
+}
+
+async function updateCommunity() {
+	while (true) {
+		for (let connect in community) {
+			let str = connect.split(":");
+			await Gamedig.query({
+				type: "tf2",
+				host: str[0],
+				port: str[1],
+				socketTimeout: 3000,
+				maxAttempts: 3
+			}).then((state) => {
+				if (community[connect] == undefined) {
+					community[connect] = "sending";
+					client.channels.get("696521177618710649").send(buildServerEmbed(state)).then((msg) => {community[connect] = msg}).catch((err) => {community[connect] = undefined});
+				}
+				else if (community[connect] != "sending") {
+					community[connect].edit(buildServerEmbed(state));
+				}
+			}).catch(() => {});
+			await sleep(2000);
+		}
+		await sleep(2000);
+	}
+}
+
+updateCommunity();
 
 async function query(input, ranges) {
 	for (let [from, to] of ranges)
