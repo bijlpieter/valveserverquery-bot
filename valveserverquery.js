@@ -104,12 +104,11 @@ function buildServerEmbed(state) {
 }
 
 const client = new discord.Client({disableEveryone: true});
-client.login(process.env.DISCORD);
+client.login("NjU3MDE5ODAwNjg5ODM2MDMy.XiSUbg.sfAQ-sUNdhG1wcnsdAhgoTgwj8Y");
 
 client.on("ready", function() {
 	client.user.setActivity("!query | finding servers...", {type: "PLAYING"});
 	client.channels.get("659147471825666066").bulkDelete(10);
-	client.channels.get("696521177618710649").bulkDelete(10);
 	console.log("Valve Server Query Bot");
 });
 
@@ -375,37 +374,38 @@ async function updateMannpower() {
 
 updateMannpower();
 
-// let community = {
-// 	"45.11.16.178:27015": undefined,
-// 	"173.236.109.123:27015": undefined
-// }
+let community = {
+	"0.0.0.0:0": undefined,
+	"45.11.16.178:27015": undefined,
+	"173.236.109.123:27015": undefined
+}
 
-// async function updateCommunity() {
-// 	while (true) {
-// 		for (let connect in community) {
-// 			let str = connect.split(":");
-// 			await Gamedig.query({
-// 				type: "tf2",
-// 				host: str[0],
-// 				port: str[1],
-// 				socketTimeout: 3000,
-// 				maxAttempts: 3
-// 			}).then((state) => {
-// 				if (community[connect] == undefined) {
-// 					community[connect] = "sending";
-// 					client.channels.get("696521177618710649").send(buildServerEmbed(state)).then((msg) => {community[connect] = msg}).catch((err) => {community[connect] = undefined});
-// 				}
-// 				else if (community[connect] != "sending") {
-// 					community[connect].edit(buildServerEmbed(state));
-// 				}
-// 			}).catch(() => {});
-// 			await sleep(2000);
-// 		}
-// 		await sleep(2000);
-// 	}
-// }
+async function updateCommunity() {
+	while (true) {
+		for (let connect in community) {
+			let str = connect.split(":");
+			Gamedig.query({
+				type: "tf2",
+				host: str[0],
+				port: str[1],
+				socketTimeout: 3000,
+				maxAttempts: 3
+			}).then((state) => {
+				if (community[connect] == undefined) {
+					community[connect] = "sending";
+					client.channels.get("696521177618710649").send(buildServerEmbed(state)).then((msg) => {community[connect] = msg}).catch((err) => {community[connect] = undefined});
+				}
+				else if (community[connect] != "sending") {
+					community[connect].edit(buildServerEmbed(state));
+				}
+			}).catch(() => {});
+			await sleep(2000);
+		}
+		await sleep(2000);
+	}
+}
 
-// updateCommunity();
+updateCommunity();
 
 async function query(input, ranges) {
 	for (let [from, to] of ranges)
