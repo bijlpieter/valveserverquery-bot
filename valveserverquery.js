@@ -108,7 +108,7 @@ client.login(process.env.DISCORD);
 
 client.on("ready", function() {
 	client.user.setActivity("!query | finding servers...", {type: "PLAYING"});
-	client.channels.get("659147471825666066").bulkDelete(10);
+	client.channels.get("698305641424617552").bulkDelete(10);
 	console.log("Valve Server Query Bot");
 });
 
