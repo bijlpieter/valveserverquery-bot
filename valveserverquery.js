@@ -359,7 +359,7 @@ async function updateMannpower() {
 				else {
 					if (mannpower[connect] == undefined) {
 						mannpower[connect] = "sending";
-						client.channels.get("659147471825666066").send(buildServerEmbed(state)).then((msg) => {mannpower[connect] = msg}).catch((err) => {mannpower[connect] = undefined});
+						client.channels.get("698305641424617552").send(buildServerEmbed(state)).then((msg) => {mannpower[connect] = msg}).catch((err) => {mannpower[connect] = undefined});
 					}
 					else if (mannpower[connect] != "sending") {
 						mannpower[connect].edit(buildServerEmbed(state));
@@ -373,39 +373,6 @@ async function updateMannpower() {
 }
 
 updateMannpower();
-
-let community = {
-	"0.0.0.0:0": undefined,
-	"45.11.16.178:27015": undefined,
-	"173.236.109.123:27015": undefined
-}
-
-async function updateCommunity() {
-	while (true) {
-		for (let connect in community) {
-			let str = connect.split(":");
-			Gamedig.query({
-				type: "tf2",
-				host: str[0],
-				port: str[1],
-				socketTimeout: 3000,
-				maxAttempts: 3
-			}).then((state) => {
-				if (community[connect] == undefined) {
-					community[connect] = "sending";
-					client.channels.get("696521177618710649").send(buildServerEmbed(state)).then((msg) => {community[connect] = msg}).catch((err) => {community[connect] = undefined});
-				}
-				else if (community[connect] != "sending") {
-					community[connect].edit(buildServerEmbed(state));
-				}
-			}).catch(() => {});
-			await sleep(2000);
-		}
-		await sleep(2000);
-	}
-}
-
-updateCommunity();
 
 async function query(input, ranges) {
 	for (let [from, to] of ranges)
