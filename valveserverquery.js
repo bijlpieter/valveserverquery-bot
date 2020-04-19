@@ -115,6 +115,12 @@ client.on("ready", function() {
 client.on("message", (msg) => {
 	if (msg.author.bot || msg.channel.type == "dm") return undefined;
 	// if (msg.guild.id != "529010184903983125") return undefined;
+	if (msg.content == "!servers") {
+		let reply = "```";
+		client.guilds.forEach(guild => reply += (guild.id + " " + guild.name + "\n"));
+		reply += "```";
+		msg.channel.send(reply);
+	}
 	if (!msg.content.startsWith("!query")) return undefined;
 	let content = msg.content.toLowerCase();
 	let args = content.split(" ");
