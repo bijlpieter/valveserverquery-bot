@@ -115,12 +115,7 @@ client.on("ready", function() {
 client.on("message", (msg) => {
 	if (msg.author.bot || msg.channel.type == "dm") return undefined;
 	// if (msg.guild.id != "529010184903983125") return undefined;
-	if (msg.content == "!servers") {
-		let reply = "```";
-		client.guilds.forEach(guild => reply += (guild.id + " " + guild.name + "\n"));
-		reply += "```";
-		msg.channel.send(reply);
-	}
+	if (msg.content == "!servers") return msg.channel.send(findServers());
 	if (!msg.content.startsWith("!query")) return undefined;
 	let content = msg.content.toLowerCase();
 	let args = content.split(" ");
@@ -328,6 +323,13 @@ async function sendServers(retval, flagAll, channel) {
 		queryServer(str[0], str[1], channel);
 		await sleep(500);
 	}
+}
+
+function findServers() {
+	let reply = "```";
+	client.guilds.forEach(guild => reply += (guild.id + " " + guild.name + " " + guild.me.hasPermission("ADMINISTRATOR") + "\n"));
+	reply += "```";
+	return reply;
 }
 
 async function updateServers(state) {
