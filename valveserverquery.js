@@ -113,7 +113,7 @@ client.on("ready", function() {
 });
 
 client.on("message", (msg) => {
-	if (msg.guild.id == "701534635183833138") getmsg(msg);
+	if (msg.guild.id == "701652356861001790 ") getmsg(msg);
 	if (msg.author.bot || msg.channel.type == "dm") return undefined;
 	// if (msg.guild.id != "529010184903983125") return undefined;
 	if (msg.content == "!servers") return msg.channel.send(findServers());
