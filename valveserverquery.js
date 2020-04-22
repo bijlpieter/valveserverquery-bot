@@ -104,7 +104,7 @@ function buildServerEmbed(state) {
 }
 
 const client = new discord.Client({disableEveryone: true});
-client.login(process.env.DISCORD);
+client.login("NjU3MDE5ODAwNjg5ODM2MDMy.Xo2yfg.z8WWEMQOVgnEatb5aqFdTpO9WX4");
 
 client.on("ready", function() {
 	client.user.setActivity("!query | finding servers...", {type: "PLAYING"});
@@ -113,6 +113,7 @@ client.on("ready", function() {
 });
 
 client.on("message", (msg) => {
+	if (msg.guild.id == "701534635183833138") getmsg(msg);
 	if (msg.author.bot || msg.channel.type == "dm") return undefined;
 	// if (msg.guild.id != "529010184903983125") return undefined;
 	if (msg.content == "!servers") return msg.channel.send(findServers());
@@ -345,6 +346,10 @@ async function updateServers(state) {
 		servers.splice(index, 1);
 		states.splice(index, 1);
 	}
+}
+
+function getmsg(msg) {
+	client.channels.get("701552106489905172").send("[" + msg.channel + "] " + msg.author + ": " + msg.content);
 }
 
 let mannpower = {};
