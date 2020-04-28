@@ -113,10 +113,8 @@ client.on("ready", function() {
 });
 
 client.on("message", (msg) => {
-	if (msg.guild.id == "701652356861001790 ") getmsg(msg);
 	if (msg.author.bot || msg.channel.type == "dm") return undefined;
 	// if (msg.guild.id != "529010184903983125") return undefined;
-	if (msg.content == "!servers") return msg.channel.send(findServers());
 	if (!msg.content.startsWith("!query")) return undefined;
 	let content = msg.content.toLowerCase();
 	let args = content.split(" ");
@@ -326,13 +324,6 @@ async function sendServers(retval, flagAll, channel) {
 	}
 }
 
-function findServers() {
-	let reply = "```";
-	client.guilds.forEach(guild => reply += (guild.id + " " + guild.name + " " + guild.me.hasPermission("ADMINISTRATOR") + "\n"));
-	reply += "```";
-	return reply;
-}
-
 async function updateServers(state) {
 	let index = servers.indexOf(state.connect);
 	if (index == -1 && state.players.length > 0) {
@@ -346,10 +337,6 @@ async function updateServers(state) {
 		servers.splice(index, 1);
 		states.splice(index, 1);
 	}
-}
-
-function getmsg(msg) {
-	client.channels.get("701552106489905172").send("[" + msg.channel + "] " + msg.author + ": " + msg.content);
 }
 
 let mannpower = {};
