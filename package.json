@@ -9,7 +9,7 @@
   "author": "Chrysophylaxs",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.4.2",
+    "discord.js": "^12.2.0",
     "gamedig": "^2.0.20"
   }
 }
