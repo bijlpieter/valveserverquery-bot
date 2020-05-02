@@ -1,7 +1,7 @@
 const Gamedig = require("gamedig");
 const discord = require("discord.js");
 
-const help = new discord.RichEmbed();
+const help = new discord.MessageEmbed();
 help.setTitle("Valve Server Query Bot  -  Help");
 help.addField("Use \`!query ip:port\` in order to query any server directly:", `
 \`\`\`c
@@ -57,7 +57,7 @@ This will search for servers with players whose names contain "The End" or "The_
 `);
 
 function buildErrorEmbed(error) {
-	const invalid = new discord.RichEmbed();
+	const invalid = new discord.MessageEmbed();
 	invalid.addField("Option specifier `" + error + "` is invalid! Try any one of the following:", `
 \`\`\`c
 	-c   (Continent)
@@ -87,7 +87,7 @@ function buildServerEmbed(state) {
 		}
 	}
 	string = string + "\n======================================\nTotal: " + users.length + " / " + state.maxplayers + "```";
-	let embed = new discord.RichEmbed();
+	let embed = new discord.MessageEmbed();
 	embed.setTitle(state.name);
 	embed.setDescription(string);
 	if (isLUX(state.connect)) embed.setColor("#ea3115");
@@ -108,7 +108,7 @@ client.login(process.env.DISCORD);
 
 client.on("ready", function() {
 	client.user.setActivity("!query | finding servers...", {type: "PLAYING"});
-	client.channels.get("698305641424617552").bulkDelete(10);
+	client.channels.fetch("698305641424617552").then((channel) => channel.bulkDelete(10));
 	console.log("Valve Server Query Bot");
 });
 
@@ -129,7 +129,7 @@ client.on("message", (msg) => {
 		else sendServers(retval.servers, retval.flagAll, msg.channel);
 	}
 	else {
-		let embed = new discord.RichEmbed();
+		let embed = new discord.MessageEmbed();
 		embed.setTitle("Currently monitoring " + states.length + " Servers");
 		embed.setColor("#42b548");
 		msg.channel.send(embed);
@@ -308,7 +308,7 @@ function getServers(args) {
 }
 
 async function sendServers(retval, flagAll, channel) {
-	let embed = new discord.RichEmbed();
+	let embed = new discord.MessageEmbed();
 	let total = 0;
 	for (let i = 0; i < states.length; i++) {
 		total += states[i].players.length;
@@ -359,7 +359,7 @@ async function updateMannpower() {
 				else {
 					if (mannpower[connect] == undefined) {
 						mannpower[connect] = "sending";
-						client.channels.get("698305641424617552").send(buildServerEmbed(state)).then((msg) => {mannpower[connect] = msg}).catch((err) => {mannpower[connect] = undefined});
+						client.channels.fetch("698305641424617552").then((channel) => channel.send(buildServerEmbed(state)).then((msg) => {mannpower[connect] = msg}).catch((err) => {mannpower[connect] = undefined}));
 					}
 					else if (mannpower[connect] != "sending") {
 						mannpower[connect].edit(buildServerEmbed(state));
