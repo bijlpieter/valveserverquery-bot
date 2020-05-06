@@ -72,7 +72,7 @@ function buildErrorEmbed(error) {
 }
 
 function buildServerEmbed(state) {
-	let string = "```c\nMap: " + state.map + "\nIP: " + state.connect + "\nName                         | Kills\n====================================";
+	let string = "```c\nMap: " + state.map + "\nIP: " + state.connect + "\nName                           | Kills\n======================================";
 	let users = state.players.concat(state.bots);
 	for (let i = 0; i < users.length; i++) if (!users[i].hasOwnProperty("name")) {
 		users[i].name = "Connecting...";
@@ -80,13 +80,13 @@ function buildServerEmbed(state) {
 	}
 	users.sort((a, b) => b.score - a.score);
 	for (let i = 0; i < users.length; i++) {
-		string = string + "\n" + users[i].name.replace(/[^\x20-\x7E]/g, " ").substring(0, 28);
+		string = string + "\n" + users[i].name.replace("\n", " ").substring(0, 30);
 		if (users[i].score >= 0) {
-			for (let j = 0; j < 28 - users[i].name.length; j++) string += " ";
+			for (let j = 0; j < 30 - users[i].name.length; j++) string += " ";
 			string = string + " | " + users[i].score;
 		}
 	}
-	string = string + "\n====================================\nTotal: " + users.length + " / " + state.maxplayers + "```";
+	string = string + "\n======================================\nTotal: " + users.length + " / " + state.maxplayers + "```";
 	let embed = new discord.MessageEmbed();
 	embed.setTitle(state.name);
 	embed.setDescription(string);
