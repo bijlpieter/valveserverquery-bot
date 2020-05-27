@@ -13,9 +13,9 @@ Both of these should work:
 help.addField("You can also search valve servers using a few parameters:", `
 \`\`\`c
 Query layout:
-	!query -[option] [params] -[option] [params] ...
+	!query -[option] [param] -[option] [param] ...
 I.E.:
-	!query -c eu -l lux sto -gm mp -m ctf_hellfire ctf_gorge
+	!query -c eu -l sto -gm mp -m ctf_hellfire
 \`\`\`
 `);
 help.addField("There are 6 possible options:", `
@@ -47,14 +47,6 @@ help.addField("\`-a\` doesn't need any parameters", `
 The bot will post all results rather than being limited to the first 4.
 \`\`\`
 `);
-help.addField("In case you would like to search a server with a player whose name contains spaces, replace the spaces with underscores:", `
-\`\`\`c
-This will search for servers with players whose names contain "The" or "End":
-	-p The End
-This will search for servers with players whose names contain "The End" or "The_End":
-	-p The_End
-\`\`\`
-`);
 
 function buildErrorEmbed(error) {
 	const invalid = new discord.MessageEmbed();
@@ -70,6 +62,8 @@ function buildErrorEmbed(error) {
 	`);
 	return invalid;
 }
+
+// let embed_id = 0;
 
 function buildServerEmbed(state) {
 	let string = "```c\nMap: " + state.map + "\nIP: " + state.connect + "\nName                           | Kills\n======================================";
@@ -100,6 +94,8 @@ function buildServerEmbed(state) {
 	if (isSGP(state.connect)) embed.setColor("#155fea");
 	if (isTKY(state.connect)) embed.setColor("#8e15ea");
 	if (isCHI(state.connect)) embed.setColor("#654321");
+	// embed.setFooter(embed_id);
+	// embed_id++;
 	return embed;
 }
 
@@ -111,6 +107,8 @@ client.on("ready", function() {
 	client.channels.fetch("698305641424617552").then((channel) => channel.bulkDelete(10));
 	console.log("Valve Server Query Bot");
 });
+
+let servers = {};
 
 client.on("message", (msg) => {
 	if (msg.author.bot || msg.channel.type == "dm") return undefined;
@@ -130,7 +128,14 @@ client.on("message", (msg) => {
 	}
 	else {
 		let embed = new discord.MessageEmbed();
-		embed.setTitle("Currently monitoring " + states.length + " Servers");
+		let totalPlayers = 0;
+		let totalServers = 0;
+		for (let i in servers) {
+			totalPlayers += servers[i].players.length;
+			totalServers++;
+		}
+		let string = "Currently monitoring " + totalServers + " Servers  |  Total players: " + totalPlayers;
+		embed.setTitle(string);
 		embed.setColor("#42b548");
 		msg.channel.send(embed);
 		msg.channel.send(help);
@@ -205,137 +210,83 @@ function getGamemode(map) {
 	return "???";
 }
 
-let servers = [];
-let states = [];
-
 function getServers(args) {
-	let continents = [];
-	let locations = [];
-	let gamemodes = [];
-	let maps = [];
-	let players = [];
-	let flagAll = false;
-
 	let i = 1;
-	while (i < args.length) {
-		if (args[i] == "-c") {
-			i++;
-			while (i < args.length && !args[i].startsWith("-")) {
-				continents.push(args[i]);
-				i++;
+	let serversFound = JSON.parse(JSON.stringify(servers));
+	let flagAll = false;
+	while (i < args.length - 1) {
+		if (!args[i].startsWith('-') && !args[i + 1].startsWith('-')) {
+			args[i] += (" " + args[i + 1]);
+			args.splice(i + 1, 1);
+		}
+		else i++;
+	}
+	for (let j = 1; j < args.length; j += 2) {
+		// console.log(args[j] + " " + args[j + 1]);
+		if (args[j] == "-c") {
+			for (let k in serversFound) if (getContinent(serversFound[k].connect) != args[j + 1]) delete serversFound[k];
+		}
+		else if (args[j] == "-l") {
+			for (let k in serversFound) if (getLocation(serversFound[k].connect) != args[j + 1]) delete serversFound[k];
+		}
+		else if (args[j] == "-gm") {
+			for (let k in serversFound) if (getGamemode(serversFound[k].map) != args[j + 1]) delete serversFound[k];
+		}
+		else if (args[j] == "-m") {
+			for (let k in serversFound) if (serversFound[k].map != args[j + 1]) delete serversFound[k];
+		}
+		else if (args[j] == "-p") {
+			for (let k in serversFound) {
+				let found = false;
+				for (let p = 0; p < serversFound[k].players.length; p++) {
+					if (serversFound[k].players[p].name.includes(args[j + 1])) {
+						found = true;
+						break;
+					}
+				}
+				if (!found) delete serversFound[k];
 			}
 		}
-		else if (args[i] == "-l") {
-			i++;
-			while (i < args.length && !args[i].startsWith("-")) {
-				locations.push(args[i]);
-				i++;
-			}
-		}
-		else if (args[i] == "-gm") {
-			i++;
-			while (i < args.length && !args[i].startsWith("-")) {
-				gamemodes.push(args[i]);
-				i++;
-			}
-		}
-		else if (args[i] == "-m") {
-			i++;
-			while (i < args.length && !args[i].startsWith("-")) {
-				maps.push(args[i]);
-				i++;
-			}
-		}
-		else if (args[i] == "-p") {
-			i++;
-			while (i < args.length && !args[i].startsWith("-")) {
-				players.push(args[i]);
-				i++;
-			}
-		}
-		else if (args[i] == "-a") {
-			i++;
+		else if (args[j] == "-a") {
+			j--;
 			flagAll = true;
 		}
-		else {
-			return {
-				"error": args[i],
-				"servers": [],
-				"flagAll": flagAll
-			};
+		else return {
+			"error": args[j],
+			"servers": {},
+			"flagAll": flagAll
 		}
-	}
-
-	let retval = states.slice(0);
-	if (continents.length > 0)
-	for (let k = 0; k < retval.length; k++) {
-		if (continents.indexOf(getContinent(retval[k].connect)) == -1) {retval.splice(k, 1); k--;}
-	}
-	if (locations.length > 0)
-	for (let k = 0; k < retval.length; k++) {
-		if (locations.indexOf(getLocation(retval[k].connect)) == -1) {retval.splice(k, 1); k--;}
-	}
-	if (gamemodes.length > 0)
-	for (let k = 0; k < retval.length; k++) {
-		if (gamemodes.indexOf(getGamemode(retval[k].map)) == -1) {retval.splice(k, 1); k--;}
-	}
-	if (maps.length > 0)
-	for (let k = 0; k < retval.length; k++) {
-		if (maps.indexOf(retval[k].map) == -1) {retval.splice(k, 1); k--;}
-	}
-	if (players.length > 0)
-	for (let k = 0; k < retval.length; k++) {
-		let plyrs = [];
-		for (let j = 0; j < retval[k].players.length; j++) {
-			if (retval[k].players[j].name) plyrs.push(retval[k].players[j].name.toLowerCase().replace(" ", "_"));
-		}
-		let found = false;
-		for (let p = 0; p < players.length; p++) {
-			for (let q = 0; q < plyrs.length; q++) {
-				if (plyrs[q].includes(players[p])) {
-					found = true;
-					break;
-				}
-			}
-		}
-		if (!found) {retval.splice(k, 1); k--;}
 	}
 	return {
 		"error": "",
-		"servers": retval,
+		"servers": serversFound,
 		"flagAll": flagAll
 	};
 }
 
 async function sendServers(retval, flagAll, channel) {
 	let embed = new discord.MessageEmbed();
-	let total = 0;
-	for (let i = 0; i < states.length; i++) {
-		total += states[i].players.length;
+	let totalPlayers = 0;
+	let totalServers = 0;
+	let totalFound = 0;
+	for (let i in servers) {
+		totalPlayers += servers[i].players.length;
+		totalServers++;
 	}
-	let string = "Found " + retval.length + " out of " + states.length + " logged Servers  |  Total players: " + total;
+	for (let i in retval) {
+		totalFound++;
+	}
+	let string = "Found " + totalFound + " out of " + totalServers + " logged Servers  |  Total players: " + totalPlayers;
 	embed.setTitle(string);
 	embed.setColor("#42b548");
 	channel.send(embed);
-	for (let i = 0; (i < retval.length) && (i < 4 || flagAll); i++) {
-		let str = retval[i].connect.split(":");
+	let j = 0;
+	for (let k in retval) {
+		let str = k.split(":");
 		queryServer(str[0], str[1], channel);
+		j++;
+		if (j == 4 && !flagAll) break;
 		await sleep(500);
-	}
-}
-
-async function updateServers(state) {
-	let index = servers.indexOf(state.connect);
-	if (index == -1 && state.players.length > 0) {
-		servers.push(state.connect);
-		states.push(state);
-	}
-	else if (index != -1 && state.players.length > 0) {
-		states[index] = state;
-	}
-	else if (index != -1) {
-		servers.splice(index, 1);
-		states.splice(index, 1);
 	}
 }
 
@@ -366,9 +317,9 @@ async function updateMannpower() {
 					}
 				}
 			}).catch(() => {});
-			await sleep(2000);
+			await sleep(500);
 		}
-		await sleep(2000);
+		await sleep(1000);
 	}
 }
 
@@ -377,7 +328,6 @@ updateMannpower();
 async function query(input, ranges) {
 	for (let [from, to] of ranges)
 	for (let ip = from; ip <= to; ip++) {
-		// console.log(ip);
 		for (let port = 27015; port < 27075; port++) {
 			Gamedig.query({
 				type: "tf2",
@@ -385,38 +335,28 @@ async function query(input, ranges) {
 				port: port
 			}).then((state) => {
 				if (state.raw.game == "Team Fortress") {
-					updateServers(state);
-					if (isMP(state.map)) {
-						if (!mannpower.hasOwnProperty(state.connect)) mannpower[state.connect] = undefined;
-					}
-					// console.log(state.map + " | " + state.connect);
+					if (state.players.length > 0) servers[state.connect] = state;
+					else if (servers.hasOwnProperty(state.connect)) delete servers[state.connect];
+					if (isMP(state.map) && !mannpower.hasOwnProperty(state.connect)) mannpower[state.connect] = undefined;
 				}
 				// if (state.raw.game == "Team Fortress") console.log(state.connect + " " + state.name);
-			}).catch((error) => {
-				// console.log("Server is Offline");
-			});
+			}).catch((error) => {});
 			await sleep(10);
 		}
 	}
 }
 
 async function losangeles() {
-	// console.log("LOSANGELES");
-	// console.log("================================");
 	await query("162.254.194.", [[146, 166]]);
 }
 
 async function virginia() {
-	// console.log("VIRGINIA");
-	// console.log("================================");
 	await query("208.78.164.", [[71, 75], [167, 170], [230, 235]]);
 	await query("208.78.165.", [[71, 75], [231, 235]]);	
 	// await query("208.78.166.", [[0, 255]]);
 }
 
 async function luxembourg() {
-	// console.log("LUXEMBOURG");
-	// console.log("================================");
 	await query("146.66.152.", [[163, 166]]);
 	await query("146.66.153.", [[72, 75], [232, 235]]);
 	// await query("146.66.154.", [[0, 255]]);
@@ -431,8 +371,6 @@ async function luxembourg() {
 }
 
 async function stockholm() {
-	// console.log("STOCKHOLM");
-	// console.log("================================");
 	await query("146.66.156.", [[167, 168]]);
 	await query("146.66.157.", [[71, 72], [232, 233]]);
 
@@ -511,16 +449,8 @@ async function queryServer(ip, port, channel) {
 		maxAttempts: 3
 	}).then((state) => {
 		channel.send(buildServerEmbed(state));
-		let index = servers.indexOf(state.connect);
-		if (index != -1) {
-			states[index] = state;
-		}
+		servers[ip + ':' + port] = state;
 	}).catch((error) => {
-		let index = servers.indexOf(ip + ":" + port);
-		if (index != -1) {
-			servers.splice(index, 1);
-			states.splice(index, 1);
-		}
+		if (servers.hasOwnProperty(ip + ':' + port)) delete servers[ip + ':' + port];
 	});
-	return undefined;
 }
