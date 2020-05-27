@@ -317,9 +317,9 @@ async function updateMannpower() {
 					}
 				}
 			}).catch(() => {});
-			await sleep(500);
+			await sleep(2000);
 		}
-		await sleep(1000);
+		await sleep(2000);
 	}
 }
 
