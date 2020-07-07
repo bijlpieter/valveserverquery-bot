@@ -111,8 +111,10 @@ client.on("ready", function() {
 let servers = {};
 
 client.on("message", (msg) => {
-	if (msg.author.bot || msg.channel.type == "dm") return undefined;
-	// if (msg.guild.id != "529010184903983125") return undefined;
+	if (msg.author.bot || msg.channel.type == "dm" || msg.guild.id != "529010184903983125") {
+		msg.channel.send("This bot is reserved for members of The Mannpower Cult!");
+		return undefined;
+	}
 	if (!msg.content.startsWith("!query")) return undefined;
 	let content = msg.content.toLowerCase();
 	let args = content.split(" ");
