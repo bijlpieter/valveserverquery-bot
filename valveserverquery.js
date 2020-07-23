@@ -63,8 +63,6 @@ function buildErrorEmbed(error) {
 	return invalid;
 }
 
-// let embed_id = 0;
-
 function buildServerEmbed(state) {
 	let string = "```c\nMap: " + state.map + "\nIP: " + state.connect + "\nName                           | Kills\n======================================";
 	let users = state.players.concat(state.bots);
@@ -94,8 +92,6 @@ function buildServerEmbed(state) {
 	if (isSGP(state.connect)) embed.setColor("#155fea");
 	if (isTKY(state.connect)) embed.setColor("#8e15ea");
 	if (isCHI(state.connect)) embed.setColor("#654321");
-	// embed.setFooter(embed_id);
-	// embed_id++;
 	return embed;
 }
 
@@ -112,7 +108,7 @@ let servers = {};
 
 client.on("message", (msg) => {
 	if (!msg.content.startsWith("!query")) return undefined;
-	if (msg.author.bot || msg.channel.type == "dm" || msg.guild.id != "529010184903983125") {
+	if ((msg.author.bot || msg.channel.type == "dm" || msg.guild.id != "529010184903983125") && !whitelisted(msg.author.id)) {
 		msg.channel.send("This bot is reserved for members of The Mannpower Cult!");
 		return undefined;
 	}
@@ -224,7 +220,6 @@ function getServers(args) {
 		else i++;
 	}
 	for (let j = 1; j < args.length; j += 2) {
-		console.log(args[j] + " " + args[j + 1]);
 		if (args[j] == "-c") {
 			for (let k in serversFound) if (getContinent(serversFound[k].connect) != args[j + 1]) delete serversFound[k];
 		}
@@ -291,6 +286,9 @@ async function sendServers(retval, flagAll, channel) {
 		await sleep(500);
 	}
 }
+
+const whitelist = ["267910288622223364", "290199958718775307"];
+function whitelisted(id) {return whitelist.includes(id)}
 
 let mannpower = {};
 
