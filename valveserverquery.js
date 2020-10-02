@@ -113,6 +113,8 @@ risktracker.on("ready", function() {
 	console.log("Risk Mannpower Tracker Bot");
 });
 
+risktracker.on("message", (msg) => {console.log(msg.content)});
+
 let servers = {};
 
 client.on("message", (msg) => {
