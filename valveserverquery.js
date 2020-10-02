@@ -104,6 +104,15 @@ client.on("ready", function() {
 	console.log("Valve Server Query Bot");
 });
 
+const risktracker = new discord.Client({disableEveryone: true});
+risktracker.login(process.env.RISKTRACKER);
+
+risktracker.on("ready", function() {
+	risktracker.user.setActivity("Mannpower Detective o/", {type: "PLAYING"});
+	risktracker.channels.fetch("761714848060145675").then((channel) => channel.bulkDelete(10));
+	console.log("Risk Mannpower Tracker Bot");
+});
+
 let servers = {};
 
 client.on("message", (msg) => {
@@ -291,10 +300,11 @@ const whitelist = ["267910288622223364", "290199958718775307"];
 function whitelisted(id) {return whitelist.includes(id)}
 
 let mannpower = {};
+let riskmp = {};
 
-async function updateMannpower() {
+async function updateMannpower(obj, channelID) {
 	while (true) {
-		for (let connect in mannpower) {
+		for (let connect in obj) {
 			let str = connect.split(":");
 			await Gamedig.query({
 				type: "tf2",
@@ -304,16 +314,16 @@ async function updateMannpower() {
 				maxAttempts: 3
 			}).then((state) => {
 				if (!isMP(state.map) || state.players.length == 0) {
-					if (mannpower[connect] && mannpower[connect] != "sending") mannpower[connect].delete();
-					delete mannpower[connect];
+					if (obj[connect] && obj[connect] != "sending") obj[connect].delete();
+					delete obj[connect];
 				}
 				else {
-					if (mannpower[connect] == undefined) {
-						mannpower[connect] = "sending";
-						client.channels.fetch("698305641424617552").then((channel) => channel.send(buildServerEmbed(state)).then((msg) => {mannpower[connect] = msg}).catch((err) => {mannpower[connect] = undefined}));
+					if (obj[connect] == undefined) {
+						obj[connect] = "sending";
+						client.channels.fetch(channelID).then((channel) => channel.send(buildServerEmbed(state)).then((msg) => {obj[connect] = msg}).catch((err) => {obj[connect] = undefined}));
 					}
-					else if (mannpower[connect] != "sending") {
-						mannpower[connect].edit(buildServerEmbed(state));
+					else if (obj[connect] != "sending") {
+						obj[connect].edit(buildServerEmbed(state));
 					}
 				}
 			}).catch(() => {});
@@ -323,7 +333,7 @@ async function updateMannpower() {
 	}
 }
 
-updateMannpower();
+updateMannpower(mannpower, "698305641424617552");
 
 async function query(input, ranges) {
 	for (let [from, to] of ranges)
@@ -338,6 +348,7 @@ async function query(input, ranges) {
 					if (state.players.length > 0) servers[state.connect] = state;
 					else if (servers.hasOwnProperty(state.connect)) delete servers[state.connect];
 					if (isMP(state.map) && !mannpower.hasOwnProperty(state.connect)) mannpower[state.connect] = undefined;
+					if (isMP(state.map) && !riskmp.hasOwnProperty(state.connect)) riskmp[state.connect] = undefined;
 				}
 				// if (state.raw.game == "Team Fortress") console.log(state.connect + " " + state.name);
 			}).catch((error) => {});
