@@ -113,12 +113,6 @@ risktracker.on("ready", function() {
 	console.log("Risk Mannpower Tracker Bot");
 });
 
-risktracker.on("message", (msg) => {
-	if (msg.author.bot) return undefined;
-	console.log(msg.content);
-	msg.channel.send(msg.content);
-});
-
 let servers = {};
 
 client.on("message", (msg) => {
@@ -308,7 +302,7 @@ function whitelisted(id) {return whitelist.includes(id)}
 let mannpower = {};
 let riskmp = {};
 
-async function updateMannpower(obj, channelID) {
+async function updateMannpower(bot, obj, channelID) {
 	while (true) {
 		for (let connect in obj) {
 			let str = connect.split(":");
@@ -326,7 +320,7 @@ async function updateMannpower(obj, channelID) {
 				else {
 					if (obj[connect] == undefined) {
 						obj[connect] = "sending";
-						client.channels.fetch(channelID).then((channel) => channel.send(buildServerEmbed(state)).then((msg) => {obj[connect] = msg}).catch((err) => {obj[connect] = undefined}));
+						bot.channels.fetch(channelID).then((channel) => channel.send(buildServerEmbed(state)).then((msg) => {obj[connect] = msg}).catch((err) => {obj[connect] = undefined}));
 					}
 					else if (obj[connect] != "sending") {
 						obj[connect].edit(buildServerEmbed(state));
@@ -339,8 +333,8 @@ async function updateMannpower(obj, channelID) {
 	}
 }
 
-updateMannpower(mannpower, "698305641424617552");
-updateMannpower(riskmp, "761714848060145675");
+updateMannpower(client, mannpower, "698305641424617552");
+updateMannpower(risktracker, riskmp, "761714848060145675");
 
 async function query(input, ranges) {
 	for (let [from, to] of ranges)
