@@ -334,6 +334,7 @@ async function updateMannpower(obj, channelID) {
 }
 
 updateMannpower(mannpower, "698305641424617552");
+updateMannpower(riskmp, "761714848060145675");
 
 async function query(input, ranges) {
 	for (let [from, to] of ranges)
