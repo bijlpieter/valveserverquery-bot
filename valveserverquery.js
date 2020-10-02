@@ -108,7 +108,7 @@ const risktracker = new discord.Client({disableEveryone: true});
 risktracker.login(process.env.RISKTRACKER);
 
 risktracker.on("ready", function() {
-	risktracker.user.setActivity("Mannpower Detective o/", {type: "PLAYING"});
+	risktracker.user.setActivity("Mannpower Detective", {type: "PLAYING"});
 	risktracker.channels.fetch("761714848060145675").then((channel) => channel.bulkDelete(10));
 	console.log("Risk Mannpower Tracker Bot");
 });
