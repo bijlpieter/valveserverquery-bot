@@ -1,6 +1,6 @@
 # valveserverquery-bot
 ## What is this?
-It started out as a simple project designed to be able to query valve's source (TF2 in specific) servers using [Valve Server Query Protocol](https://developer.valvesoftware.com/wiki/Server_queries). As a long time mannpower fan, this project then got extended with other features that allow it to display and update current servers in a discord channel.
+It started out as a simple project designed to be able to query valve's source (TF2 in specific) servers using [Valve Server Query Protocol](https://developer.valvesoftware.com/wiki/Server_queries). As a long time mannpower fan, this project then got extended with other features that allow it to display and update current servers in a discord channel for the entire community.
 ## How to use?
 In order to prevent unmonitored use of the bot, my hosted version prevents users outside the mannpower community from using the bot.
 Host the (`node.js`) bot locally using `node valveserverquery`, or set it up somewhere else (Mine is hosted on [heroku](https://www.heroku.com/)).
