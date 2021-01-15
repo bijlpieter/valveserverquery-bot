@@ -63,6 +63,12 @@ function buildErrorEmbed(error) {
 	return invalid;
 }
 
+function formatUsername(username) {
+	username = username.replace("\n", " ");
+	username = username.replace("\u200F", "*");
+	return username.substring(0, 30);
+}
+
 function buildServerEmbed(state) {
 	let string = "```c\nMap: " + state.map + "\nIP: " + state.connect + "\nName                           | Kills\n======================================";
 	let users = state.players.concat(state.bots);
@@ -72,7 +78,7 @@ function buildServerEmbed(state) {
 	}
 	users.sort((a, b) => b.score - a.score);
 	for (let i = 0; i < users.length; i++) {
-		string = string + "\n" + users[i].name.replace("\n", " ").substring(0, 30);
+		string = string + "\n" + formatUsername(users[i].name);
 		if (users[i].score >= 0) {
 			for (let j = 0; j < 30 - users[i].name.length; j++) string += " ";
 			string = string + " | " + users[i].score;
