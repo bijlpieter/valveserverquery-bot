@@ -72,7 +72,7 @@ function buildServerEmbed(state) {
 	}
 	users.sort((a, b) => b.score - a.score);
 	for (let i = 0; i < users.length; i++) {
-		string = string + "\n" + users[i].name.replace("/[\n\x{2000}-\x{200F}]+/u", "*").substring(0, 30);
+		string = string + "\n" + users[i].name.replace("\n", " ").substring(0, 30);
 		if (users[i].score >= 0) {
 			for (let j = 0; j < 30 - users[i].name.length; j++) string += " ";
 			string = string + " | " + users[i].score;
