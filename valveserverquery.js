@@ -115,7 +115,7 @@ risktracker.login(process.env.RISKTRACKER);
 
 risktracker.on("ready", function() {
 	risktracker.user.setActivity("Mannpower Detective", {type: "PLAYING"});
-	risktracker.channels.fetch("761714848060145675").then((channel) => channel.bulkDelete(10));
+	risktracker.channels.fetch("802628228165402715").then((channel) => channel.bulkDelete(10));
 	console.log("Risk Mannpower Tracker Bot");
 });
 
@@ -340,7 +340,7 @@ async function updateMannpower(bot, obj, channelID) {
 }
 
 updateMannpower(client, mannpower, "698305641424617552");
-updateMannpower(risktracker, riskmp, "761714848060145675");
+updateMannpower(risktracker, riskmp, "802628228165402715");
 
 async function query(input, ranges) {
 	for (let [from, to] of ranges)
