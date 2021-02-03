@@ -51,7 +51,7 @@ The bot will post all results rather than being limited to the first 4.
 function buildErrorEmbed(error) {
 	const invalid = new discord.MessageEmbed();
 	invalid.addField("Option specifier `" + error + "` is invalid! Try any one of the following:", `
-\`\`\`c
+\`\`\`
 	-continent           -c
 	-location            -l
 	-gamemode            -gm
