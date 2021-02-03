@@ -52,12 +52,13 @@ function buildErrorEmbed(error) {
 	const invalid = new discord.MessageEmbed();
 	invalid.addField("Option specifier `" + error + "` is invalid! Try any one of the following:", `
 \`\`\`c
-	-c   (Continent)
-	-l   (Location)
-	-gm  (Gamemode)
-	-m   (Map)
-	-p   (Player)
-	-a   (All)
+	-continent           -c
+	-location            -l
+	-gamemode            -gm
+	-map                 -m
+	-player              -p
+	-exactplayer         -ep
+	-all                 -a
 \`\`\`
 	`);
 	return invalid;
@@ -235,19 +236,19 @@ function getServers(args) {
 		else i++;
 	}
 	for (let j = 1; j < args.length; j += 2) {
-		if (args[j] == "-c") {
+		if (args[j] == "-continent" || args[j] == "-c") {
 			for (let k in serversFound) if (getContinent(serversFound[k].connect) != args[j + 1]) delete serversFound[k];
 		}
-		else if (args[j] == "-l") {
+		else if (args[j] == "-location" || args[j] == "-l") {
 			for (let k in serversFound) if (getLocation(serversFound[k].connect) != args[j + 1]) delete serversFound[k];
 		}
-		else if (args[j] == "-gm") {
+		else if (args[j] == "-gamemode" || args[j] == "-gm") {
 			for (let k in serversFound) if (getGamemode(serversFound[k].map) != args[j + 1]) delete serversFound[k];
 		}
-		else if (args[j] == "-m") {
+		else if (args[j] == "-map" || args[j] == "-m") {
 			for (let k in serversFound) if (serversFound[k].map != args[j + 1]) delete serversFound[k];
 		}
-		else if (args[j] == "-p") {
+		else if (args[j] == "-player" || args[j] == "-p") {
 			for (let k in serversFound) {
 				let found = false;
 				for (let p = 0; p < serversFound[k].players.length; p++) {
@@ -259,7 +260,19 @@ function getServers(args) {
 				if (!found) delete serversFound[k];
 			}
 		}
-		else if (args[j] == "-a") {
+		else if (args[j] == "-exactplayer" || args[j] == "-ep") {
+			for (let k in serversFound) {
+				let found = false;
+				for (let p = 0; p < serversFound[k].players.length; p++) {
+					if (serversFound[k].players[p].hasOwnProperty("name") && serversFound[k].players[p].name.toLowerCase() == args[j + 1]) {
+						found = true;
+						break;
+					}
+				}
+				if (!found) delete serversFound[k];
+			}
+		}
+		else if (args[j] == "-all" || args[j] == "-a") {
 			j--;
 			flagAll = true;
 		}
