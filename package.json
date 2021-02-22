@@ -1,15 +1,15 @@
 {
-  "name": "valveserverquery",
-  "version": "1.0.0",
-  "description": "valveserverquery",
-  "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Chrysophylaxs",
-  "license": "ISC",
-  "dependencies": {
-    "discord.js": "^12.2.0",
-    "gamedig": "^2.0.20"
-  }
+	"name": "valveserverquery",
+	"version": "2.0.0",
+	"description": "valveserverquery",
+	"main": "valveserverquery.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Chrysophylaxs",
+	"license": "ISC",
+	"dependencies": {
+		"discord.js": "^12.2.0",
+		"gamedig": "^2.0.20"
+	}
 }
