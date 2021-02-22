@@ -30,4 +30,4 @@ One thread loops through the `servers[mp]` object, continuously updating every m
 - `tracker.js`          The class managing a webhook, specifically to update mannpower servers and edit the webhook message with the new info.
 - `util.js`             Utility sleep and error function.
 
-valveserverquery.js The main file that runs all of the above
+- `valveserverquery.js` The main file that runs all of the above
