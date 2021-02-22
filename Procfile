@@ -1,1 +1,1 @@
-worker: node valveserverquery
+worker: node .
