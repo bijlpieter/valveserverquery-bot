@@ -18,18 +18,16 @@ When the discord bot receives a `!query` or `!stats`, it parses the options, cre
 ### Updating mannpower
 One thread loops through the `servers[mp]` object, continuously updating every mannpower server. Another thread is managing a webhook, and edits a message with all the servers in the object as an embed. If a server ends up being removed, the embed is removed. If a new server pops up, a new embed is added. A webhook is used because you can send up to 10 embeds in a single message, as opposed to a discord bot, which can only add 1.
 ## Files
-```
-bot.js              The class managing the discord bot, and handles incoming messages.
-casualfilter.js     Used for parsing messages and filtering all servers according to the user's query parameters.
-casualservers.js    All kinds of utility functions and constants that apply to TF2 casual matchmaking, such as locations and gamemodes given an IP / Map.
-commands.js         All of the bot commands, !query and !stats.
-config.js           Contains all config variables, such as tokens and ids that allow us to access the discord API.
-embeds.js           Contains predefined embeds and functions that build all kinds of discord embeds to display the information in discord.
-httpreq.js          Simple PATCH https request function that is used to update webhook messages.
-querying.js         Defines a class that handles all of the tf2 casual server querying using gamedig, as well as a simple wrapper that queries a tf2 server by ip:port.
-statistics.js       A class that calculates all of the statistics given an object of casual servers; used for the !stats command.
-tracker.js          The class managing a webhook, specifically to update mannpower servers and edit the webhook message with the new info.
-util.js             Utility sleep and error function.
+- `bot.js`              The class managing the discord bot, and handles incoming messages.
+- `casualfilter.js`     Used for parsing messages and filtering all servers according to the user's query parameters.
+- `casualservers.js`    All kinds of utility functions and constants that apply to TF2 casual matchmaking, such as locations and gamemodes given an IP / Map.
+- `commands.js`         All of the bot commands, !query and !stats.
+- `config.js`           Contains all config variables, such as tokens and ids that allow us to access the discord API.
+- `embeds.js`           Contains predefined embeds and functions that build all kinds of discord embeds to display the information in discord.
+- `httpreq.js`          Simple PATCH https request function that is used to update webhook messages.
+- `querying.js`         Defines a class that handles all of the tf2 casual server querying using gamedig, as well as a simple wrapper that queries a tf2 server by ip:port.
+- `statistics.js`       A class that calculates all of the statistics given an object of casual servers; used for the !stats command.
+- `tracker.js`          The class managing a webhook, specifically to update mannpower servers and edit the webhook message with the new info.
+- `util.js`             Utility sleep and error function.
 
 valveserverquery.js The main file that runs all of the above
-```
