@@ -117,7 +117,7 @@ help.addField("\`-m\` and \`-p\` can be used with any parameters:", `
 	-p Chrysophylaxs
 \`\`\`
 `);
-help.addField("If you use multiple different options, the bot will search for servers where both options are true", `
+help.addField("If you use multiple different options, the bot will search for servers where all options are true", `
 \`\`\`c
 	!query -c eu -m ctf_hellfire
 		will find servers running hellfire in eu
