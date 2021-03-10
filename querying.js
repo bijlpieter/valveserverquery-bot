@@ -23,10 +23,10 @@ class Queryer {
 		}
 	}
 
-	async query(input, ranges) {
+	async query(input, ranges, end = 27075) {
 		for (let [from, to] of ranges)
 			for (let ip = from; ip <= to; ip++)
-				for (let port = 27015; port < 27075; port++) {
+				for (let port = 27015; port < end; port++) {
 					gamedig.query({type: "tf2", host: input + ip, port: port}).then(this.process).catch(error);
 					await sleep(8);
 				}
@@ -75,8 +75,8 @@ class Queryer {
 	}
 
 	async washington() {
-		// await this.query('192.69.96.', [[0, 255]]);
-		await this.query('192.69.97.', [[60, 62]]);
+		// await this.query("192.69.96.", [[0, 255]]);
+		await this.query("192.69.97.", [[60, 62]]);
 	}
 
 	async singapore() {
@@ -102,16 +102,21 @@ class Queryer {
 
 	async chile() {
 		// Other SA
-		// await this.query('209.197.29.', [[0, 255]]);
-		// await this.query('209.197.25.', [[0, 255]]);
-		// await this.query('205.185.194.', [[0, 255]]);
-		// await this.query('143.137.146.', [[0, 255]]);
-		await this.query('155.133.249.', [[91, 92]]);
+		// await this.query("209.197.29.", [[0, 255]]);
+		// await this.query("209.197.25.", [[0, 255]]);
+		// await this.query("205.185.194.", [[0, 255]]);
+		// await this.query("143.137.146.", [[0, 255]]);
+		await this.query("155.133.249.", [[91, 92]]);
+	}
+
+	async special() {
+		await this.query("155.133.226.", [[116, 116], [124, 124]], 27271);
 	}
 
 	async queryAll() {
 		while (true) {
 			// await this.luxembourg();
+			await this.special();
 			await this.stockholm();
 			await this.madrid();
 			await this.virginia();
