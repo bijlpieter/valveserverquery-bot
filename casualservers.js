@@ -10,7 +10,7 @@ function isMP(map) {return map == "ctf_thundermountain" || map == "ctf_hellfire"
 function isPASS(map) {return map.startsWith("pass_");}
 function isMVM(map) {return map.startsWith("mvm_");}
 
-function isVIR(ip) {return ip.startsWith("208.78.164.") || ip.startsWith("208.78.165.");}
+function isVIR(ip) {return ip.startsWith("208.78.164.") || ip.startsWith("208.78.165.") || ip.startsWith("208.78.166.") || ip.startsWith("162.254.192.");}
 function isLAX(ip) {return ip.startsWith("162.254.194.");}
 function isMWH(ip) {return ip.startsWith("192.69.97.");}
 function isLUX(ip) {return ip.startsWith("146.66.152.") || ip.startsWith("146.66.153.") || ip.startsWith("146.66.158.") || ip.startsWith("146.66.159.") || ip.startsWith("155.133.240.") || ip.startsWith("155.133.241.") || ip.startsWith("155.133.226.");}
