@@ -2,8 +2,8 @@ const {Client} = require("discord.js");
 const {query, stats} = require("./commands.js");
 
 const whitelist = ["267910288622223364"];
-function whitelisted(id) {return whitelist.includes(id);}
-function allowed(msg) {return (!msg.author.bot && msg.channel.type != "dm" && msg.guild.id == "529010184903983125") || whitelisted(msg.author.id);}
+function whitelisted(id) { return whitelist.includes(id); }
+function allowed(msg) { return !msg.author.bot && msg.channel.type != "dm" && msg.guild.id == "529010184903983125"; }
 
 class Bot {
 	constructor(servers) {
@@ -19,7 +19,7 @@ class Bot {
 			if (!msg.content.startsWith("!query") && !msg.content.startsWith("!stats"))
 				return undefined;
 
-			if (!allowed(msg))
+			if (!allowed(msg) && !whitelisted(msg.author.id))
 				return msg.channel.send("This bot is reserved for members of The Mannpower Cult!");
 
 			const args = msg.content.split(' ');
