@@ -14,11 +14,11 @@ exports.patch = (uri, data, headers = {}) => {
 	return new Promise((resolve, reject) => {
 		const req = https.request(options, res => {
 			let fullData = "";
-			res.on('data', (data) => {fullData += data});
-			res.on('end', () => resolve(fullData));
+			res.on("data", (data) => {fullData += data});
+			res.on("end", () => resolve(fullData));
 		})
 
-		req.on('error', (error) => reject(error));
+		req.on("error", (error) => reject(error));
 
 		req.write(JSON.stringify(data));
 		req.end();
