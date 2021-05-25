@@ -23,7 +23,7 @@ class Stats {
 			const gm = casual.get.gamemode(servers[connect].map);
 			const loc = casual.get.location(connect);
 			const con = casual.get.continent(connect);
-			const players = servers[connect].players.length
+			const players = servers[connect].players.length;
 
 			this.servers++;
 			this.players += players;
