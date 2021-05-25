@@ -101,12 +101,16 @@ class Queryer {
 		// await this.query("103.10.125.", [[0, 255]]);
 	}
 
+	async peru() {
+		// await query('143.137.146.', [[0, 255]]);
+		await this.query("190.217.33.", [[84, 85]]);
+	}
+
 	async chile() {
 		// Other SA
 		// await this.query("209.197.29.", [[0, 255]]);
 		// await this.query("209.197.25.", [[0, 255]]);
 		// await this.query("205.185.194.", [[0, 255]]);
-		// await this.query("143.137.146.", [[0, 255]]);
 		await this.query("155.133.249.", [[91, 92]]);
 	}
 
@@ -123,6 +127,7 @@ class Queryer {
 			await this.virginia();
 			await this.losangeles();
 			await this.washington();
+			await this.peru();
 			await this.chile();
 			await this.singapore();
 			await this.hongkong();

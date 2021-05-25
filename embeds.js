@@ -63,6 +63,7 @@ function server(state) {
 	if (loc.isSGP(state.connect)) embed.setColor("#155fea");
 	if (loc.isTKY(state.connect)) embed.setColor("#8e15ea");
 	if (loc.isCHI(state.connect)) embed.setColor("#654321");
+	if (loc.isPER(state.connect)) embed.setColor("#cd853f");
 	return embed;
 }
 
@@ -107,7 +108,7 @@ help.addField("There are 6 possible options and their shorthands:", `
 help.addField("\`-c\`, \`-l\` and \`-gm\` have limited options as parameters:", `
 \`\`\`c
 	-c [eu, na, sa, as, af, oc]
-	-l [lux, sto, mad, vir, lax, mwh, sgp, tky, hkg, chi, sny]
+	-l [lux, sto, mad, vir, lax, mwh, sgp, tky, hkg, chi, per, sny]
 	-gm [ad, ctf, koth, cp, pl, plr, misc, mp, pass, pd, mvm]
 \`\`\`
 `);

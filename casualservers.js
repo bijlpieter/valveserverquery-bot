@@ -20,12 +20,13 @@ function isSGP(ip) {return ip.startsWith("103.28.54.") || ip.startsWith("103.28.
 function isTKY(ip) {return ip.startsWith("45.121.186.") || ip.startsWith("45.121.187.");}
 function isHKG(ip) {return ip.startsWith("155.133.244.");}
 function isCHI(ip) {return ip.startsWith("155.133.249.");}
+function isPER(ip) {return ip.startsWith("190.217.33.");}
 function isSNY(ip) {return ip.startsWith("103.10.125.");}
 
 function isNA(ip) {return isVIR(ip) || isLAX(ip) || isMWH(ip);}
 function isEU(ip) {return isLUX(ip) || isSTO(ip) || isMAD(ip);}
 function isAS(ip) {return isSGP(ip) || isTKY(ip) || isHKG(ip);}
-function isSA(ip) {return isCHI(ip);}
+function isSA(ip) {return isCHI(ip) || isPER(ip);}
 function isAF(ip) {return false;}
 function isOC(ip) {return isSNY(ip);}
 
@@ -50,6 +51,7 @@ const TOKYO = 8;
 const HONGKONG = 9;
 const CHILE = 10;
 const SYDNEY = 11;
+const PERU = 12;
 
 // Gamemodes
 const ATTACK_DEFEND = 1;
@@ -65,7 +67,7 @@ const PASSTIME = 10;
 const MANN_VS_MACHINE = 11;
 
 const continents = ["???", "eu", "na", "sa", "as", "af", "oc"];
-const locations = ["???", "lux", "sto", "mad", "vir", "lax", "mwh", "sgp", "tky", "hkg", "chi", "sny"];
+const locations = ["???", "lux", "sto", "mad", "vir", "lax", "mwh", "sgp", "tky", "hkg", "chi", "sny", "per"];
 const gamemodes = ["???", "ad", "ctf", "cp", "koth", "pl", "plr", "misc", "pd", "mp", "pass", "mvm"];
 
 function continent(ip) {
@@ -90,6 +92,7 @@ function location(ip) {
 	if (isHKG(ip)) return locations[HONGKONG];
 	if (isCHI(ip)) return locations[CHILE];
 	if (isSNY(ip)) return locations[SYDNEY];
+	if (isPER(ip)) return locations[PERU];
 	return locations[UNKNOWN];
 }
 
@@ -110,7 +113,7 @@ function gamemode(map) {
 
 module.exports = {
 	gm: {isAD, isCTF, isCP, isKOTH, isPL, isPLR, isMISC, isPD, isMP, isPASS, isMVM},
-	loc: {isVIR, isLAX, isMWH, isLUX, isSTO, isMAD, isSGP, isTKY, isHKG, isCHI},
+	loc: {isVIR, isLAX, isMWH, isLUX, isSTO, isMAD, isSGP, isTKY, isHKG, isCHI, isPER},
 	con: {isNA, isEU, isAS},
 	get: {gamemode, continent, location},
 	gamemodes, locations, continents
