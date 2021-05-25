@@ -37,7 +37,7 @@ async function searchCasual(msg, args, servers) {
 	let i = 0;
 	for (let connect in all) {
 		msg.channel.send(embeds.server(all[connect]));
-		if (++i == 4)
+		if (++i == 4) // Don't send more than 4 servers to avoid cluttering the channel with an infinite list of servers
 			break;
 		await sleep(500);
 	}
