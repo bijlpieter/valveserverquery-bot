@@ -6,11 +6,14 @@ const config = require("./config.js");
 class ValveServerQuery {
 	constructor() {
 		this.servers = {};
+
 		this.bot = new Bot(this.servers);
+		this.queryer = new Queryer(this.servers, () => this.track());
+		
 		this.trackers = [];
 		this.trackers.push(new Tracker(this.servers, config.tmc_hook));
 		this.trackers.push(new Tracker(this.servers, config.tmt_hook));
-		this.queryer = new Queryer(this.servers, () => this.track());
+		
 	}
 
 	track() {
