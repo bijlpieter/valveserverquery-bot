@@ -16,7 +16,7 @@ If a server is found with players on it, it will be added to the `servers` objec
 ### User driven search
 When the discord bot receives a `!query` or `!stats`, it parses the options, creates a copy of the `servers` object and removes all entries that do not satisfy the users options. It then loops through the remaining entries in the `servers` objects and requeries these servers. The server's response is rechecked, and then sent to the discord channel. This ensures up to date server information.
 ### Updating mannpower
-One thread loops through the `servers[mp]` object, continuously updating every mannpower server. Another thread is managing a webhook, and edits a message with all the servers in the object as an embed. If a server ends up being removed, the embed is removed. If a new server pops up, a new embed is added. A webhook is used because you can send up to 10 embeds in a single message, as opposed to a discord bot, which can only add 1.
+The final routine continuously loops through the `servers[mp]` object, updating every mannpower server as new ones are added by the server querying routine. The result of the updated server info is updated using a discord webhook which edits a message with all the servers in the object as an embed. If a server ends up being removed, the embed is removed. If a new server pops up, a new embed is added. A webhook is used because you can send up to 10 embeds in a single message, as opposed to a discord bot, which can only add 1.
 ## Files
 - `bot.js`              The class managing the discord bot, and handles incoming messages.
 - `casualfilter.js`     Used for parsing messages and filtering all servers according to the user's query parameters.
