@@ -18,7 +18,7 @@ class Tracker {
 		tracking = true;
 		console.log("Tracking mp...");
 		while (true) {
-			await sleep(1600);
+			await sleep(1900);
 			for (let connect in this.servers["mp"]) {
 				const ipport = connect.split(':');
 				const state = await directQuery(ipport[0], ipport[1]).catch(error);
