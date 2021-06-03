@@ -11,7 +11,7 @@ function isPASS(map) {return map.startsWith("pass_");}
 function isMVM(map) {return map.startsWith("mvm_");}
 
 function isVIR(ip) {return ip.startsWith("208.78.164.") || ip.startsWith("208.78.165.") || ip.startsWith("208.78.166.") || ip.startsWith("162.254.192.");}
-function isLAX(ip) {return ip.startsWith("162.254.194.");}
+function isLAX(ip) {return ip.startsWith("162.254.194.") || ip.startsWith("162.254.195.");}
 function isMWH(ip) {return ip.startsWith("192.69.97.");}
 function isLUX(ip) {return ip.startsWith("146.66.152.") || ip.startsWith("146.66.153.") || ip.startsWith("146.66.158.") || ip.startsWith("146.66.159.") || ip.startsWith("155.133.240.") || ip.startsWith("155.133.241.") || ip.startsWith("155.133.226.");}
 function isSTO(ip) {return ip.startsWith("146.66.156.") || ip.startsWith("146.66.157.") || ip.startsWith("155.133.242.") || ip.startsWith("155.133.243.") || ip.startsWith("185.25.180.") || ip.startsWith("185.25.181.");}
