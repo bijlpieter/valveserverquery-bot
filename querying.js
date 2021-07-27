@@ -92,7 +92,8 @@ class Queryer {
 	}
 
 	async hongkong() {
-		await this.query("155.133.244.", [[76, 78], [236, 238]]);
+		// await this.query("155.133.244.", [[76, 78], [236, 238]]);
+		await this.query('153.254.86.', [[212, 212], [217, 217]]);
 	}
 
 	async tokyo() {
