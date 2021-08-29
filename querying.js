@@ -61,8 +61,8 @@ class Queryer {
 	}
 
 	async madrid() {
-		// await this.query("155.133.246.", [[0, 255]]);
-		await this.query("155.133.247.", [[142, 145]]);
+		await this.query("155.133.246.", [[84, 85]]);
+		// await this.query("155.133.247.", [[142, 145]]);
 		// await this.query("155.133.248.", [[0, 255]]);
 	}
 
