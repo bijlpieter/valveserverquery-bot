@@ -38,6 +38,9 @@ class Tracker {
 			const data = {"embeds": []};
 			for (let connect in this.servers["mp"])
 				data["embeds"].push(embeds.server(this.servers["mp"][connect]));
+
+			data["embeds"].push(embeds.server(directQuery("209.192.173.14", 27015))).catch(error);
+
 			if (data["embeds"].length > 10)
 				data["embeds"].splice(10);
 			if (data["embeds"].length == 0)
