@@ -68,8 +68,7 @@ class Queryer {
 
 	async virginia() {
 		// await this.query("208.78.164.", [[71, 75], [167, 170], [230, 235]]);
-		await this.query("208.78.165.", [[163, 165], [231, 235]]);
-		await this.query("208.78.166.", [[228, 229]]);
+		// await this.query("208.78.165.", [[163, 165], [231, 235]]);
 		await this.query("162.254.192.", [[146, 155]]);
 	}
 
@@ -80,7 +79,7 @@ class Queryer {
 
 	async washington() {
 		// await this.query("192.69.96.", [[0, 255]]);
-		await this.query("192.69.97.", [[60, 62]]);
+		await this.query("208.78.166.", [[228, 229]]);
 	}
 
 	async singapore() {
