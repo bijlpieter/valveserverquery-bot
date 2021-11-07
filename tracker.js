@@ -39,7 +39,7 @@ class Tracker {
 			for (let connect in this.servers["mp"])
 				data["embeds"].push(embeds.server(this.servers["mp"][connect]));
 
-			const risk_server = await directQuery("209.192.165.131", 27015).catch(error);
+			const risk_server = await directQuery("66.242.13.188", 27015).catch(error);
 			if (risk_server)
 				data["embeds"].push(embeds.server(risk_server));
 
