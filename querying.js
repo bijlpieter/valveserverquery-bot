@@ -61,7 +61,7 @@ class Queryer {
 	}
 
 	async madrid() {
-		await this.query("155.133.246.", [[84, 85]]);
+		await this.query("155.133.246.", [[84, 87]]);
 		// await this.query("155.133.247.", [[142, 145]]);
 		// await this.query("155.133.248.", [[0, 255]]);
 	}
@@ -117,15 +117,16 @@ class Queryer {
 		await this.query("155.133.249.", [[91, 92]]);
 	}
 
-	async special() {
+	async eu() {
+		await this.query("155.133.252.", [[100, 100], [103, 103], [105, 105], [108, 108], [114, 114], [117, 117], [120, 120]]);
 		await this.query("155.133.226.", [[116, 116], [124, 124]], 27271);
 	}
 
 	async queryAll() {
 		while (true) {
 			// await this.luxembourg();
-			await this.special();
-			await this.stockholm();
+			// await this.stockholm();
+			await this.eu();
 			await this.madrid();
 			await this.virginia();
 			await this.losangeles();
