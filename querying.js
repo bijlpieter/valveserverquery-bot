@@ -74,7 +74,7 @@ class Queryer {
 
 	async losangeles() {
 		// await this.query("162.254.194.", [[146, 166]]);
-		await this.query("162.254.195.", [[114, 118]]);
+		await this.query("162.254.195.", [[114, 114], [116, 118]], 27115);
 	}
 
 	async washington() {
