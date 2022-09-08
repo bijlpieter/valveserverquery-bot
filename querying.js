@@ -44,7 +44,7 @@ class Queryer {
 	}
 
 	async singapore() {
-		await this.query('103.10.124.', [50, 58]);
+		await this.query('103.10.124.', [50, 54, 58], 27074);
 	}
 
 	async sydney() {
