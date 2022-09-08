@@ -115,7 +115,7 @@ function gamemode(map) {
 
 module.exports = {
 	gm: {isAD, isCTF, isCP, isKOTH, isPL, isPLR, isMISC, isPD, isMP, isPASS, isMVM},
-	loc: {isVIR, isLAX, isMWH, isLUX, isSTO, isMAD, isSGP, isTKY, isHKG, isCHI, isPER},
+	loc: {isFRA, isSNY, isMWH, isBRA, isSTO, isMAD, isSGP, isTKY, isHKG, isCHI, isPER, isJHB, isMUM, isCHE},
 	con: {isNA, isEU, isAS},
 	get: {gamemode, continent, location},
 	gamemodes, locations, continents
