@@ -32,59 +32,59 @@ class Queryer {
 	}
 
 	async stockholm() {
-		await query('155.133.252.', [100, 103, 108, 114, 117, 120], 27074);
+		await this.query('155.133.252.', [100, 103, 108, 114, 117, 120], 27074);
 	}
 
 	async madrid() {
-		await query('155.133.246.', [84], 27074);
+		await this.query('155.133.246.', [84], 27074);
 	}
 
 	async washington() {
-		await query('155.133.254.', [116], 27114);
+		await this.query('155.133.254.', [116], 27114);
 	}
 
 	async singapore() {
-		await query('103.10.124.', [50, 58]);
+		await this.query('103.10.124.', [50, 58]);
 	}
 
 	async sydney() {
-		await query('103.10.125.', [36, 42], 27086);
+		await this.query('103.10.125.', [36, 42], 27086);
 	}
 
 	async hongkong() {
-		await query('153.254.86.', [212, 217], 27074);
+		await this.query('153.254.86.', [212, 217], 27074);
 	}
 
 	async chile() {
-		await query('155.133.249.', [23, 24], 27074);
+		await this.query('155.133.249.', [23, 24], 27074);
 	}
 
 	async frankfurt() {
-		await query('155.133.226.', [116, 117, 124, 125], 27270);
+		await this.query('155.133.226.', [116, 117, 124, 125], 27270);
 	}
 
 	async chennai() {
-		await query('155.133.232.', [22], 27086);
+		await this.query('155.133.232.', [22], 27086);
 	}
 
 	async mumbai() {
-		await query('155.133.233.', [20, 21, 22], 27054);
+		await this.query('155.133.233.', [20, 21, 22], 27054);
 	}
 
 	async johannesburg() {
-		await query('155.133.238.', [41, 42, 80, 82], 27086);
+		await this.query('155.133.238.', [41, 42, 80, 82], 27086);
 	}
 
 	async tokyo() {
-		await query('155.133.239.', [68, 71], 27074);
+		await this.query('155.133.239.', [68, 71], 27074);
 	}
 
 	async peru() {
-		await query('190.217.33.', [84], 27074);
+		await this.query('190.217.33.', [84], 27074);
 	}
 
 	async brazil() {
-		await query('205.185.194.', [82, 83, 84, 85], 27062);
+		await this.query('205.185.194.', [82, 83, 84, 85], 27062);
 	}
 
 
