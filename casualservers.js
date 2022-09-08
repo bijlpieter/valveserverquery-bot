@@ -10,24 +10,26 @@ function isMP(map) {return map == "ctf_thundermountain" || map == "ctf_hellfire"
 function isPASS(map) {return map.startsWith("pass_");}
 function isMVM(map) {return map.startsWith("mvm_");}
 
-function isVIR(ip) {return ip.startsWith("208.78.164.") || ip.startsWith("208.78.165.") || ip.startsWith("162.254.192.");}
-function isLAX(ip) {return ip.startsWith("162.254.194.") || ip.startsWith("162.254.195.");}
-function isMWH(ip) {return ip.startsWith("208.78.166.");}
-function isLUX(ip) {return ip.startsWith("146.66.152.") || ip.startsWith("146.66.153.") || ip.startsWith("146.66.158.") || ip.startsWith("146.66.159.") || ip.startsWith("155.133.240.") || ip.startsWith("155.133.241.") || ip.startsWith("155.133.226.");}
-function isSTO(ip) {return ip.startsWith("146.66.156.") || ip.startsWith("146.66.157.") || ip.startsWith("155.133.242.") || ip.startsWith("155.133.243.") || ip.startsWith("185.25.180.") || ip.startsWith("185.25.181.") || ip.startsWith("155.133.252.");}
-function isMAD(ip) {return ip.startsWith("155.133.246.");}
-function isSGP(ip) {return ip.startsWith("103.28.54.") || ip.startsWith("103.28.55.") || ip.startsWith("45.121.184.") || ip.startsWith("45.121.185.");}
-function isTKY(ip) {return ip.startsWith("45.121.186.") || ip.startsWith("45.121.187.");}
-function isHKG(ip) {return ip.startsWith("153.254.86.");}
-function isCHI(ip) {return ip.startsWith("155.133.249.");}
-function isPER(ip) {return ip.startsWith("190.217.33.");}
-function isSNY(ip) {return ip.startsWith("103.10.125.");}
+function isSTO(ip) { return ip.startsWith("155.133.252.") }
+function isMAD(ip) { return ip.startsWith("155.133.246.") }
+function isMWH(ip) { return ip.startsWith("155.133.254.") }
+function isSGP(ip) { return ip.startsWith("103.10.124.") }
+function isSNY(ip) { return ip.startsWith("103.10.125.") }
+function isHKG(ip) { return ip.startsWith("153.254.86.") }
+function isCHI(ip) { return ip.startsWith("155.133.249.") }
+function isFRA(ip) { return ip.startsWith("155.133.226.") }
+function isCHE(ip) { return ip.startsWith("155.133.232.") }
+function isMUM(ip) { return ip.startsWith("155.133.233.") }
+function isJHB(ip) { return ip.startsWith("155.133.238.") }
+function isTKY(ip) { return ip.startsWith("155.133.239.") }
+function isPER(ip) { return ip.startsWith("190.217.33.") }
+function isBRA(ip) { return ip.startsWith("205.185.194.") }
 
 function isNA(ip) {return isVIR(ip) || isLAX(ip) || isMWH(ip);}
-function isEU(ip) {return isLUX(ip) || isSTO(ip) || isMAD(ip);}
-function isAS(ip) {return isSGP(ip) || isTKY(ip) || isHKG(ip);}
-function isSA(ip) {return isCHI(ip) || isPER(ip);}
-function isAF(ip) {return false;}
+function isEU(ip) {return isFRA(ip) || isSTO(ip) || isMAD(ip);}
+function isAS(ip) {return isSGP(ip) || isTKY(ip) || isHKG(ip) || isMUM(ip) || isCHE(ip);}
+function isSA(ip) {return isCHI(ip) || isPER(ip) || isBRA(ip);}
+function isAF(ip) {return isJHB(ip);}
 function isOC(ip) {return isSNY(ip);}
 
 const UNKNOWN = 0;

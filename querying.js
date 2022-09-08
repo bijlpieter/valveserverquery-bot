@@ -23,120 +23,87 @@ class Queryer {
 		}
 	}
 
-	async query(input, ranges, end = 27075) {
-		for (let [from, to] of ranges)
-			for (let ip = from; ip <= to; ip++)
-				for (let port = 27015; port < end; port++) {
-					gamedig.query({type: "tf2", host: input + ip, port: port}).then(this.process).catch(error);
-					await sleep(8);
-				}
-	}
-
-	async luxembourg() {
-		await this.query("146.66.152.", [[163, 166]]);
-		await this.query("146.66.153.", [[72, 75], [232, 235]]);
-		// await this.query("146.66.154.", [[0, 255]]);
-		// await this.query("146.66.155.", [[0, 255]]);	
-		await this.query("146.66.158.", [[167, 170]]);
-		await this.query("146.66.159.", [[71, 74], [230, 233]]);
-
-		// await this.query("155.133.228.", [[0, 255]]);
-		// await this.query("155.133.229.", [[0, 255]]);
-		await this.query("155.133.240.", [[167, 170]]);
-		await this.query("155.133.241.", [[71, 74]]);
+	async query(input, ranges, end) {
+		for (let ip of ranges)
+			for (let port = 27015; port <= end; port++) {
+				gamedig.query({type: "tf2", host: input + ip, port: port}).then(this.process).catch(error);
+				await sleep(8);
+			}
 	}
 
 	async stockholm() {
-		await this.query("146.66.156.", [[167, 168]]);
-		await this.query("146.66.157.", [[71, 72], [232, 233]]);
-
-		await this.query("155.133.242.", [[167, 168]]);
-		await this.query("155.133.243.", [[71, 72]]);
-
-		await this.query("185.25.180.", [[167, 168]]);
-		await this.query("185.25.181.", [[71, 72], [230, 235]]);
-
-		await this.query("155.133.252.", [[100, 100], [103, 103], [105, 105], [108, 108], [114, 114], [117, 117], [120, 120]]);
-		// await this.query("185.25.182.", [[0, 255]]);
+		await query('155.133.252.', [100, 103, 108, 114, 117, 120], 27074);
 	}
 
 	async madrid() {
-		await this.query("155.133.246.", [[84, 87]]);
-		// await this.query("155.133.247.", [[142, 145]]);
-		// await this.query("155.133.248.", [[0, 255]]);
-	}
-
-	async virginia() {
-		// await this.query("208.78.164.", [[71, 75], [167, 170], [230, 235]]);
-		// await this.query("208.78.165.", [[163, 165], [231, 235]]);
-		await this.query("162.254.192.", [[146, 156]]);
-	}
-
-	async losangeles() {
-		// await this.query("162.254.194.", [[146, 166]]);
-		await this.query("162.254.195.", [[114, 114], [116, 118]], 27115);
+		await query('155.133.246.', [84], 27074);
 	}
 
 	async washington() {
-		// await this.query("192.69.96.", [[0, 255]]);
-		await this.query("208.78.166.", [[228, 229]]);
+		await query('155.133.254.', [116], 27114);
 	}
 
 	async singapore() {
-		await this.query("103.28.54.", [[163, 164]]);
-		await this.query("103.28.55.", [[71, 73], [232, 233]]);
-		// await this.query("103.10.124.", [[0, 255]]);
-		await this.query("45.121.184.", [[163, 164]]);
-		await this.query("45.121.185.", [[67, 68], [228, 229]]);
-	}
-
-	async hongkong() {
-		// await this.query("155.133.244.", [[76, 78], [236, 238]]);
-		await this.query('153.254.86.', [[212, 212], [217, 217]]);
-	}
-
-	async tokyo() {
-		await this.query("45.121.186.", [[160, 162]]);
-		await this.query("45.121.187.", [[60, 62]]);
+		await query('103.10.124.', [50, 58]);
 	}
 
 	async sydney() {
-		// await this.query("103.10.125.", [[0, 255]]);
+		await query('103.10.125.', [36, 42], 27086);
 	}
 
-	async peru() {
-		// await query('143.137.146.', [[0, 255]]);
-		await this.query("190.217.33.", [[84, 85]]);
+	async hongkong() {
+		await query('153.254.86.', [212, 217], 27074);
 	}
 
 	async chile() {
-		// Other SA
-		// await this.query("209.197.29.", [[0, 255]]);
-		// await this.query("209.197.25.", [[0, 255]]);
-		// await this.query("205.185.194.", [[0, 255]]);
-		await this.query("155.133.249.", [[91, 92]]);
+		await query('155.133.249.', [23, 24], 27074);
 	}
 
-	async eu() {
-		await this.query("155.133.252.", [[100, 100], [103, 103], [105, 105], [108, 108], [114, 114], [117, 117], [120, 120]]);
-		await this.query("155.133.226.", [[116, 117], [124, 125]], 27271);
+	async frankfurt() {
+		await query('155.133.226.', [116, 117, 124, 125], 27270);
 	}
+
+	async chennai() {
+		await query('155.133.232.', [22], 27086);
+	}
+
+	async mumbai() {
+		await query('155.133.233.', [20, 21, 22], 27054);
+	}
+
+	async johannesburg() {
+		await query('155.133.238.', [41, 42, 80, 82], 27086);
+	}
+
+	async tokyo() {
+		await query('155.133.239.', [68, 71], 27074);
+	}
+
+	async peru() {
+		await query('190.217.33.', [84], 27074);
+	}
+
+	async brazil() {
+		await query('205.185.194.', [82, 83, 84, 85], 27062);
+	}
+
 
 	async queryAll() {
 		while (true) {
-			// await this.luxembourg();
-			// await this.stockholm();
-			await this.eu();
+			await this.stockholm();
+			await this.frankfurt();
 			await this.madrid();
-			await this.virginia();
-			await this.losangeles();
 			await this.washington();
+			await this.sydney();
 			await this.peru();
-			await this.chile();
-			await this.singapore();
-			await this.hongkong();
 			await this.tokyo();
-			// await this.sydney();
+			await this.singapore();
+			await this.johannesburg();
+			await this.brazil();
+			await this.mumbai();
+			await this.chennai();
+			await this.chile();
+			await this.hongkong();
 			if (!this.operational) {
 				this.operational = true;
 				if (this.onOperational)

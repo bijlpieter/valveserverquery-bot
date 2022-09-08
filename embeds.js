@@ -53,17 +53,23 @@ function server(state) {
 	const embed = new MessageEmbed();
 	embed.setTitle(state.name);
 	embed.setDescription(string);
-	if (loc.isLUX(state.connect)) embed.setColor("#ea3115");
+	if (loc.isFRA(state.connect)) embed.setColor("#ea3115");
 	if (loc.isSTO(state.connect)) embed.setColor("#ea5815");
 	if (loc.isMAD(state.connect)) embed.setColor("#eae715");
-	if (loc.isVIR(state.connect)) embed.setColor("#63ea15");
-	if (loc.isLAX(state.connect)) embed.setColor("#15ea71");
 	if (loc.isMWH(state.connect)) embed.setColor("#002800");
 	if (loc.isHKG(state.connect)) embed.setColor("#15c3ea");
 	if (loc.isSGP(state.connect)) embed.setColor("#155fea");
 	if (loc.isTKY(state.connect)) embed.setColor("#8e15ea");
 	if (loc.isCHI(state.connect)) embed.setColor("#654321");
 	if (loc.isPER(state.connect)) embed.setColor("#cd853f");
+	if (loc.isJHB(state.connect)) embed.setColor("#e03c31");
+	if (loc.isMUM(state.connect)) embed.setColor("#ffc72c");
+	if (loc.isCHE(state.connect)) embed.setColor("#ff9933");
+	if (loc.isBRA(state.connect)) embed.setColor("#009639");
+	if (loc.isSNY(state.connect)) embed.setColor("#2b3770");
+
+	// if (loc.isVIR(state.connect)) embed.setColor("#63ea15");
+	// if (loc.isLAX(state.connect)) embed.setColor("#15ea71");
 	return embed;
 }
 
