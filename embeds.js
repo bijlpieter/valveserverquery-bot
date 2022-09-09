@@ -34,7 +34,7 @@ function formatUsername(username) {
 }
 
 function server(state) {
-	let string = "```c\nMap: " + state.map + "\nIP: " + state.connect + "\nName                           | Kills\n======================================";
+	let string = "```c\nMap: " + state.map + "\nName                           | Kills\n======================================";
 	let users = state.players.concat(state.bots);
 	for (let i = 0; i < users.length; i++) if (!users[i].hasOwnProperty("name")) {
 		users[i].name = "Connecting...";
