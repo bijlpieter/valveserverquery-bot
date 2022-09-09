@@ -92,7 +92,7 @@ function location(ip) {
 	if (isVIR(ip)) return locations[VIRGINIA];
 	if (isLAX(ip)) return locations[LOSANGELES];
 	if (isMWH(ip)) return locations[WASHINGTON];
-	if (isFRA(ip)) return locations[LUXEMBOURG];
+	if (isFRA(ip)) return locations[FRANKFURT];
 	if (isSTO(ip)) return locations[STOCKHOLM];
 	if (isMAD(ip)) return locations[MADRID];
 	if (isSGP(ip)) return locations[SINGAPORE];
