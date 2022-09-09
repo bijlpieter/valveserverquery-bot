@@ -12,6 +12,8 @@ function isMVM(map) {return map.startsWith("mvm_");}
 
 function isSTO(ip) { return ip.startsWith("155.133.252.") }
 function isMAD(ip) { return ip.startsWith("155.133.246.") }
+function isLAX(ip) { return false; }
+function isVIR(ip) { return false; }
 function isMWH(ip) { return ip.startsWith("155.133.254.") }
 function isSGP(ip) { return ip.startsWith("103.10.124.") }
 function isSNY(ip) { return ip.startsWith("103.10.125.") }
@@ -42,7 +44,7 @@ const AFRICA = 5;
 const OCEANIA = 6;
 
 // Locations
-const LUXEMBOURG = 1;
+const FRANKFURT = 1;
 const STOCKHOLM = 2;
 const MADRID = 3;
 const VIRGINIA = 4;
@@ -54,6 +56,10 @@ const HONGKONG = 9;
 const CHILE = 10;
 const SYDNEY = 11;
 const PERU = 12;
+const MUMBAI = 13;
+const CHENNAI = 14;
+const BRAZIL = 15;
+const JOHANNESBURG = 16;
 
 // Gamemodes
 const ATTACK_DEFEND = 1;
@@ -69,7 +75,7 @@ const PASSTIME = 10;
 const MANN_VS_MACHINE = 11;
 
 const continents = ["???", "eu", "na", "sa", "as", "af", "oc"];
-const locations = ["???", "lux", "sto", "mad", "vir", "lax", "mwh", "sgp", "tky", "hkg", "chi", "sny", "per"];
+const locations = ["???", "fra", "sto", "mad", "vir", "lax", "mwh", "sgp", "tky", "hkg", "chi", "sny", "per", "bom", "che", "bra", "jhb"];
 const gamemodes = ["???", "ad", "ctf", "cp", "koth", "pl", "plr", "misc", "pd", "mp", "pass", "mvm"];
 
 function continent(ip) {
@@ -86,7 +92,7 @@ function location(ip) {
 	if (isVIR(ip)) return locations[VIRGINIA];
 	if (isLAX(ip)) return locations[LOSANGELES];
 	if (isMWH(ip)) return locations[WASHINGTON];
-	if (isLUX(ip)) return locations[LUXEMBOURG];
+	if (isFRA(ip)) return locations[LUXEMBOURG];
 	if (isSTO(ip)) return locations[STOCKHOLM];
 	if (isMAD(ip)) return locations[MADRID];
 	if (isSGP(ip)) return locations[SINGAPORE];
@@ -95,6 +101,10 @@ function location(ip) {
 	if (isCHI(ip)) return locations[CHILE];
 	if (isSNY(ip)) return locations[SYDNEY];
 	if (isPER(ip)) return locations[PERU];
+	if (isJHB(ip)) return locations[JOHANNESBURG];
+	if (isMUM(ip)) return locations[MUMBAI];
+	if (isCHE(ip)) return locations[CHENNAI];
+	if (isBRA(ip)) return locations[BRAZIL];
 	return locations[UNKNOWN];
 }
 
