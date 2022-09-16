@@ -27,7 +27,7 @@ class Queryer {
 		for (let ip of ranges)
 			for (let port = 27015; port <= end; port++) {
 				gamedig.query({type: "tf2", host: input + ip, port: port}).then(this.process).catch(error);
-				await sleep(8);
+				await sleep(9);
 			}
 	}
 
