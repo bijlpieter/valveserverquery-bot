@@ -12,8 +12,6 @@ class ValveServerQuery {
 		
 		this.trackers = [];
 		this.trackers.push(new Tracker(this.servers, config.tmc_hook));
-		this.trackers.push(new Tracker(this.servers, config.tmt_hook));
-		
 	}
 
 	track() {
